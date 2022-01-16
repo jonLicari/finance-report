@@ -311,7 +311,7 @@ def report( objectList ):
     income , expenditures = 0, 0
     trans, subs, util, eat, ent, hmof, other = 0, 0, 0, 0, 0, 0, 0 
     
-    # Used for passing arguments to plot functions
+    # Used for passing arguments to plot function parameters
     outgoing = {
         "Transportation":INIT,
         "Subscriptions":INIT,
@@ -411,5 +411,5 @@ def report( objectList ):
     # ------------------------------------------------------------------ #
     # Plotting Functions
     # ------------------------------------------------------------------ #
-    #finreport_plot.expense_bkdwn( outgoing )
-    finreport_plot.ratio_bkdwn( ratio )
+    #finreport_plot.ratio_bkdwn( ratio )
+    finreport_plot.expense_bkdwn( outgoing )
