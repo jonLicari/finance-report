@@ -322,6 +322,14 @@ def report( objectList ):
         "Other":INIT 
     }
 
+    incoming = {
+        "Salary":INIT,
+        "Freelance":INIT,
+        "Investment Returns":INIT,
+        "Tax Credits":INIT,
+        "Credit Rewards":INIT
+    }
+    
     ratio = {
         "Savings": INIT,
         "Expenditures": INIT
@@ -411,5 +419,6 @@ def report( objectList ):
     # ------------------------------------------------------------------ #
     # Plotting Functions
     # ------------------------------------------------------------------ #
-    #finreport_plot.ratio_bkdwn( ratio )
+    finreport_plot.income_bkdwn( incoming )
     finreport_plot.expense_bkdwn( outgoing )
+    finreport_plot.ratio_bkdwn( ratio )

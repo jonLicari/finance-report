@@ -3,7 +3,6 @@
 # File: finreport_plot.py                                                #          
 # Plots data to create graphic financial summaries                       #
 # ---------------------------------------------------------------------- #
-from cProfile import label
 from matplotlib import pyplot as plt
 
 # ---------------------------------------------------------------------- #
@@ -12,8 +11,35 @@ from matplotlib import pyplot as plt
 # Return: none                                                           #
 # Description: Plots distribution of income of respective categories     #
 # ---------------------------------------------------------------------- #
-def income_bkdwn( ):
-    income = []
+def income_bkdwn( income: dict ):
+    inc = plt
+
+    # Sort categories based on dollar amount
+    income = dict(
+        sorted( 
+            income.items(), 
+            key=lambda item: item[1],
+            reverse=True
+        )
+    )  
+
+    # Unpack dictionary keys and values into separate tuples
+    x, y = (zip(*income.items())) 
+    
+    # Build bar chart
+    inc.bar(
+        x,
+        y
+    )
+
+    # Label chart
+    inc.title("Categorical Income Breakdown")
+    inc.xlabel("Category of Income Item")
+    inc.ylabel("Amount ($)")
+
+    # Display chart
+    inc.tight_layout()
+    inc.show()  
 
 # ---------------------------------------------------------------------- #
 # Function: Expense Breakdown                                            #
