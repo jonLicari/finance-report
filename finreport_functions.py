@@ -4,15 +4,17 @@
 # Defines functions used to compute annual and                           #
 # monthly expense and income based on different metrics                  #
 # ---------------------------------------------------------------------- #
+import finreport_plot 
 
-# Months lookup table
+# Definitions
+INIT = 0.00
 months = {0: "NULL", 1: "January", 2: "February", 3: "March", 4: "April", 
         5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 
         10: "October", 11: "November", 12: "December"}
 
 # ---------------------------------------------------------------------- #
 # Function: Beautify                                                     #
-# Parameters: (decimal.Decimal) value                                            #
+# Parameters: (decimal.Decimal) value                                    #
 # Return: (String) result                                                #
 # Description: Formats larger sums for easier readability.               #
 # ---------------------------------------------------------------------- #
@@ -307,7 +309,23 @@ def home( objectList ):
 def report( objectList ):
     value = 0
     income , expenditures = 0, 0
-    trans, subs, util, eat, ent, hmof = 0, 0, 0, 0, 0, 0
+    trans, subs, util, eat, ent, hmof, other = 0, 0, 0, 0, 0, 0, 0 
+    
+    # Used for passing arguments to plot functions
+    outgoing = {
+        "Transportation":INIT,
+        "Subscriptions":INIT,
+        "Utilities":INIT,
+        "Food":INIT,
+        "Entertainment":INIT,
+        "Home & Office":INIT,
+        "Other":INIT 
+    }
+
+    ratio = {
+        "Savings": INIT,
+        "Expenditures": INIT
+    }
 
     # 1. Annual Income
     income = annualIncome(objectList)
@@ -320,53 +338,78 @@ def report( objectList ):
 
     # 5. Annual Transportation
     trans = annualTransportation(objectList)
+    outgoing["Transportation"] = trans
 
     # 6. Annual Subscriptions
     subs = subscriptions(objectList)
+    outgoing["Subscriptions"] = subs
 
     # 7. Annual Utilities
     util = utilities(objectList)
+    outgoing["Utilities"] = util
 
     # 8. Annual Food
     eat = food(objectList)
+    outgoing["Food"] = eat 
 
     # 9. Annual Entertainment
     ent = entertainment(objectList)
+    outgoing["Entertainment"] = ent
 
     # 10. Annual Home and Office
     hmof = home(objectList)
+    outgoing["Home & Office"] = hmof 
 
+    # 11. Other
+    other = expenditures - (trans + subs + util + hmof + eat + ent)
+    outgoing["Other"] = other
+
+    # ------------------------------------------------------------------ #
     # Calculate Savings
+    # ------------------------------------------------------------------ #
     value = income - expenditures
     print("\n\nSavings = $", beautify(value))
+
+    ratio["Savings"] = value
+    ratio["Expenditures"] = expenditures
     
+    # ------------------------------------------------------------------ #
     # Expenditure to Income
+    # ------------------------------------------------------------------ #
     value = "{:.2f}".format( (expenditures / income ) * 100 )
     print("Spent ", value, "% of income" )
     value = "{:.2f}".format( ( 1 - (expenditures/income) ) * 100 )
     print("Saved ", value, "% of income" )
-
-    # Expenditure breakdown
+    
+    # ------------------------------------------------------------------ #
+    # Expenditure Breakdown
+    # ------------------------------------------------------------------ #
     print("\nExpenditures")
 
     value = "{:.2f}".format((trans/expenditures)*100)
-    print("-- Transportation = %", value, "of Expenditures")
+    print("-- Transportation =", value, "% of Expenditures")
 
     value = "{:.2f}".format((subs/expenditures)*100)
-    print("-- Subscriptions = %", value, "of Expenditures")
+    print("-- Subscriptions =", value, "% of Expenditures")
 
     value = "{:.2f}".format((util/expenditures)*100)
-    print("-- Utilities = %", value, "of Expenditures")
+    print("-- Utilities =", value, "% of Expenditures")
 
     value = "{:.2f}".format((hmof/expenditures)*100)
-    print("-- Home and Office = %", value, "of Expenditures")
+    print("-- Home and Office =", value, "% of Expenditures")
 
     value = "{:.2f}".format((eat/expenditures)*100)
-    print("-- Food = %", value, "of Expenditures")
+    print("-- Food =", value, "% of Expenditures")
 
     value = "{:.2f}".format((ent/expenditures)*100)
-    print("-- Entertainment = %", value, "of Expenditures")
+    print("-- Entertainment =", value, "% of Expenditures")
 
     value = trans + subs + util + hmof + eat + ent
     value = "{:.2f}".format(((expenditures - value)/expenditures)*100)
-    print("-- Other = %", value, "of Expenditures")
+    print("-- Other =", value, "% of Expenditures")
+
+    # ------------------------------------------------------------------ #
+    # Plotting Functions
+    # ------------------------------------------------------------------ #
+    #finreport_plot.expense_bkdwn( outgoing )
+    finreport_plot.ratio_bkdwn( ratio )
