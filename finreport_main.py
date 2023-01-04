@@ -35,27 +35,6 @@ rawDataFile_df = pd.read_excel(config.rawDataFile)
 # floating point operations
 rawDataFile_df['Amount'] = rawDataFile_df['Amount'].astype(str)
 
-# ---------------------------------------------------------------------- #
-# Data Structure: Expense Item
-# Description: Contains attributes describing the expense item 
-# ---------------------------------------------------------------------- #
-# | Type | Name | Amount | Date | Category | Sub-Category | Notes |
-# ---------------------------------------------------------------------- #
-# Type: Income, Expense
-# Name: 
-# Amount: $ CAD
-# Date: mm-dd-yyyy
-# Category (sub-category): 
-#   Transportation: Gas, Presto, Insurance, Car, Rideshare
-#   Primary: 
-#   Secondary: Freelance, Investment Returns, Tax Credit, Credit Rewards 
-#   Subscriptions: Entertainment, Gym, Tech, 
-#   Utilities: Phone, Internet, Hydro,
-#   Home: Furnishing, Cleaning, Office
-#   Food: Restaurant, Grocery, Alcohol
-#   Entertainment: Tech, Movies, Gaming, Events
-#   
-# ---------------------------------------------------------------------- #
 class Expense:
     def __init__(self, type, name, amount, date, category, subcat, notes):
         self.type = type
