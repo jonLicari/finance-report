@@ -1,13 +1,14 @@
 # ---------------------------------------------------------------------- #
 # Author: Jonathan Licari                                                #
-# File: finreport_functions.py                                           #          
+# File: finreport_functions.py                                           #
 # Defines functions used to compute annual and                           #
 # monthly expense and income based on different metrics                  #
 # ---------------------------------------------------------------------- #
+"""Report financial computations."""
 
 # Months lookup table
-months = {0: "NULL", 1: "January", 2: "February", 3: "March", 4: "April", 
-        5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 
+months = {0: "NULL", 1: "January", 2: "February", 3: "March", 4: "April",
+        5: "May", 6: "June", 7: "July", 8: "August", 9: "September",
         10: "October", 11: "November", 12: "December"}
 
 # ---------------------------------------------------------------------- #
@@ -34,7 +35,7 @@ def beautify( value ):
             result += value[x]
         else:
             result += value[x]
-    
+
     return result
 
 # ---------------------------------------------------------------------- #
@@ -46,7 +47,7 @@ def beautify( value ):
 def annualIncome( objectList ):
     primary = 0
     secondary = 0
-    freelance, investment, taxcred, creditreward = 0, 0, 0, 0 
+    freelance, investment, taxcred, creditreward = 0, 0, 0, 0
 
     for x in range(len(objectList)):
         if (objectList[x].type == "Income"):
@@ -63,7 +64,7 @@ def annualIncome( objectList ):
                         taxcred += objectList[x].amount
                     case("Credit Rewards"):
                         creditreward += objectList[x].amount
-    
+
     print("\nYearly Income = $", beautify(primary + secondary) )
     print("-- Income from Primary Sources= $", beautify(primary))
     print("-- Income from Secondary Sources = $", beautify(secondary))
@@ -108,7 +109,7 @@ def monthlyIncome( objectList, monthID ):
 
     monthID = months[int(monthID.replace("-", ""))]
     print("-- Income for", monthID, "= $", beautify(sum))
-    
+
     return sum
 # test call for October
 # monthlyIncome(expenseList, "-10-")
@@ -265,7 +266,7 @@ def entertainment( objectList ):
     print("-- Tech = $", beautify(tech))
     print("-- Movies = $", beautify(movies))
     print("-- Gaming = $", beautify(gaming))
-    print("-- Events = $", beautify(events))  
+    print("-- Events = $", beautify(events))
 
     return total
 
@@ -339,7 +340,7 @@ def report( objectList ):
     # Calculate Savings
     value = income - expenditures
     print("\n\nSavings = $", beautify(value))
-    
+
     # Expenditure to Income
     value = "{:.2f}".format( (expenditures / income ) * 100 )
     print("Spent ", value, "% of income" )

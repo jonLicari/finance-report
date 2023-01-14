@@ -9,11 +9,12 @@
 # Input: Raw expense data xlsx file                                      #
 # Output: none                                                           #
 # ---------------------------------------------------------------------- #
+"""Report main file."""
+
 import decimal
 
 import pandas as pd
 
-import config
 import finreport_functions
 
 # ---------------------------------------------------------------------- #
@@ -28,9 +29,15 @@ SCAT = 5
 NOTE = 6
 
 
+def data_resource():
+    """Return the path to the data resource."""
+    resource = r'data/cashflow-2022.xlsx'
+    return resource
+
+
 def read_data_file():
     """Input data from xlsx file and store in a pandas dataframe."""
-    raw_data_file_df = pd.read_excel(config.rawDataFile)
+    raw_data_file_df = pd.read_excel(data_resource())
 
     # Number data stored as float64 by default.
     # Convert to string to avoid floating point operations
@@ -55,10 +62,13 @@ def format_object_list(input_df: pd.DataFrame):
             input_df.iloc[i][NAME],
             input_df.iloc[i][AMT],
             input_df.iloc[i][DATE],
-            input_df.iloc[i][CAT],
-            input_df.iloc[i][SCAT],
-            input_df.iloc[i][NOTE]
         )
+        new_expense.categorize(
+            input_df.iloc[i][CAT],
+            input_df.iloc[i][SCAT]
+        )
+        new_expense.add_notes(input_df.iloc[i][NOTE])
+
         # add new Expense item to the expense object list
         expense_list.append(new_expense)
 
@@ -75,15 +85,25 @@ def compute_report(expenses: list):
 
 
 class Expense:
-    """Object containing Expense item details"""
+    """Object containing Expense item details."""
 
-    def __init__(self, type, name, amount, date, category, subcat, notes):
-        self.type = type
+    def __init__(self, exp_type, name, amount, date):
+        """Expense object constructor."""
+        self.exp_type = exp_type
         self.name = name
         self.amount = decimal.Decimal(amount)
         self.date = date
-        self.category = category
-        self.subcat = subcat
+        self.category = ""
+        self.subcat = ""
+        self.notes = ""
+
+    def categorize(self, primary, secondary):
+        """Categorize the expense item."""
+        self.category = primary
+        self.subcat = secondary
+
+    def add_notes(self, notes):
+        """Ad optional notes to expense item."""
         self.notes = notes
 
 
