@@ -11,11 +11,9 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 
-import decimal
-
 import pandas as pd
 
-import finreport_functions
+from utils import expense_class, finreport_functions
 
 # ---------------------------------------------------------------------- #
 # Constant Declarations
@@ -57,7 +55,7 @@ def format_object_list(input_df: pd.DataFrame):
     # Populate the object list
     for i in range(num_expense_entries):
         # Read each row of the dataframe into an instance of the Expense object
-        new_expense = Expense(
+        new_expense = expense_class.Expense(
             input_df.iloc[i][TYPE],
             input_df.iloc[i][NAME],
             input_df.iloc[i][AMT],
@@ -82,29 +80,6 @@ def compute_report(expenses: list):
     """Compute the financial report using the populated expense list."""
     # Executions List
     finreport_functions.report(expenses)
-
-
-class Expense:
-    """Object containing Expense item details."""
-
-    def __init__(self, exp_type, name, amount, date):
-        """Expense object constructor."""
-        self.exp_type = exp_type
-        self.name = name
-        self.amount = decimal.Decimal(amount)
-        self.date = date
-        self.category = ""
-        self.subcat = ""
-        self.notes = ""
-
-    def categorize(self, primary, secondary):
-        """Categorize the expense item."""
-        self.category = primary
-        self.subcat = secondary
-
-    def add_notes(self, notes):
-        """Ad optional notes to expense item."""
-        self.notes = notes
 
 
 def main():
