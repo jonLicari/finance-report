@@ -78,7 +78,7 @@ def annual_income(object_list: Expense):
     freelance, investment, taxcred, creditreward = 0, 0, 0, 0
 
     for index in range(len(object_list)):
-        if object_list[index].type == "Income":
+        if object_list[index].exp_type == "Income":
             if object_list[index].category == "Primary":
                 primary += object_list[index].amount
             else:
@@ -119,10 +119,11 @@ def annual_expenses(object_list: Expense):
     """
     total_expense = 0
     for index in range(len(object_list)):
-        if object_list[index].type == "Expense":
+        if object_list[index].exp_type == "Expense":
             total_expense += object_list[index].amount
 
-    print("\nYearly expenses = $", beautify(total_expense))
+    # print("\nYearly expenses = $", beautify(total_expense))
+    print("\nYearly expenses = $", total_expense)
 
     return total_expense
 
@@ -151,7 +152,7 @@ def monthly_income(object_list, month_id):
 
         if (
             (month_id in month_string) and
-            (object_list[index].type == "Income")
+            (object_list[index].exp_type == "Income")
         ):
             monthly_income_total += object_list[index].amount
 
@@ -423,33 +424,42 @@ def report(object_list):
     print("\n\nSavings = $", beautify(value))
 
     # Expenditure to Income
-    # value = "{:.2f}".format((expenditures / income) * 100)
-    value = f'{(expenditures / income) * 100}'
+    value = (expenditures / income) * 100
+    value = f'{value:.2f}'
     print("Spent ", value, "% of income")
-    value = "{:.2f}".format((1 - (expenditures / income)) * 100)
+
+    value = (1 - (expenditures / income)) * 100
+    value = f'{value:.2f}'
     print("Saved ", value, "% of income")
 
     # Expenditure breakdown
     print("\nExpenditures")
 
-    value = "{:.2f}".format((trans / expenditures) * 100)
+    value = (trans / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Transportation = %", value, "of Expenditures")
 
-    value = "{:.2f}".format((subs / expenditures) * 100)
+    value = (subs / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Subscriptions = %", value, "of Expenditures")
 
-    value = "{:.2f}".format((util / expenditures) * 100)
+    value = (util / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Utilities = %", value, "of Expenditures")
 
-    value = "{:.2f}".format((hmof / expenditures) * 100)
+    value = (hmof / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Home and Office = %", value, "of Expenditures")
 
-    value = "{:.2f}".format((eat / expenditures) * 100)
+    value = (eat / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Food = %", value, "of Expenditures")
 
-    value = "{:.2f}".format((ent / expenditures) * 100)
+    value = (ent / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Entertainment = %", value, "of Expenditures")
 
     value = trans + subs + util + hmof + eat + ent
-    value = "{:.2f}".format(((expenditures - value) / expenditures) * 100)
+    value = ((expenditures - value) / expenditures) * 100
+    value = f'{value:.2f}'
     print("-- Other = %", value, "of Expenditures")
