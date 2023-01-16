@@ -8,7 +8,7 @@
 
 import decimal
 
-from utils import expense_class
+from utils.expense_class import Expense
 
 # Months lookup table
 months = {
@@ -51,17 +51,17 @@ def beautify(value: decimal.Decimal):
     size = len(value)
     result = ""
 
-    for x in range(0, size):
-        if ((x == size - 6) and ((size - 6) != 0)):
+    for index in range(0, size):
+        if ((index == size - 6) and ((size - 6) != 0)):
             result += "'"
-            result += value[x]
+            result += value[index]
         else:
-            result += value[x]
+            result += value[index]
 
     return result
 
 
-def annual_income(object_list: expense_class.Expense):
+def annual_income(object_list: Expense):
     """
     Calculate total annual income across all sources.
 
@@ -77,21 +77,21 @@ def annual_income(object_list: expense_class.Expense):
     secondary = 0
     freelance, investment, taxcred, creditreward = 0, 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].type == "Income"):
-            if (object_list[x].category == "Primary"):
-                primary += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].type == "Income":
+            if object_list[index].category == "Primary":
+                primary += object_list[index].amount
             else:
-                secondary += object_list[x].amount
-                match (object_list[x].subcat):
+                secondary += object_list[index].amount
+                match (object_list[index].subcat):
                     case("Freelance"):
-                        freelance += object_list[x].amount
+                        freelance += object_list[index].amount
                     case("Investment Returns"):
-                        investment += object_list[x].amount
+                        investment += object_list[index].amount
                     case("Tax Credit"):
-                        taxcred += object_list[x].amount
+                        taxcred += object_list[index].amount
                     case("Credit Rewards"):
-                        creditreward += object_list[x].amount
+                        creditreward += object_list[index].amount
 
     print("\nYearly Income = $", beautify(primary + secondary))
     print("-- Income from Primary Sources= $", beautify(primary))
@@ -105,7 +105,7 @@ def annual_income(object_list: expense_class.Expense):
     return result
 
 
-def annual_expenses(object_list: expense_class.Expense):
+def annual_expenses(object_list: Expense):
     """
     Calculate total annual outgoing expenses.
 
@@ -118,9 +118,9 @@ def annual_expenses(object_list: expense_class.Expense):
     total_expense : decimal.Decimal
     """
     total_expense = 0
-    for x in range(len(object_list)):
-        if (object_list[x].type == "Expense"):
-            total_expense += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].type == "Expense":
+            total_expense += object_list[index].amount
 
     print("\nYearly expenses = $", beautify(total_expense))
 
@@ -146,11 +146,14 @@ def monthly_income(object_list, month_id):
     """
     monthly_income_total = 0
 
-    for x in range(len(object_list)):
-        month_string = str(object_list[x].date)
+    for index in range(len(object_list)):
+        month_string = str(object_list[index].date)
 
-        if (month_id in month_string) and (object_list[x].type == "Income"):
-            monthly_income_total += object_list[x].amount
+        if (
+            (month_id in month_string) and
+            (object_list[index].type == "Income")
+        ):
+            monthly_income_total += object_list[index].amount
 
     month_id = months[int(month_id.replace("-", ""))]
     print("-- Income for", month_id, "= $", beautify(monthly_income_total))
@@ -158,7 +161,7 @@ def monthly_income(object_list, month_id):
     return monthly_income_total
 
 
-def annual_transportation(object_list: expense_class.Expense):
+def annual_transportation(object_list: Expense):
     """
     Calculate total annual transportation expenses.
 
@@ -173,20 +176,20 @@ def annual_transportation(object_list: expense_class.Expense):
     total = 0
     gas, presto, ins, car, ride = 0, 0, 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Transportation"):
-            total += object_list[x].amount
-            match (object_list[x].subcat):
+    for index in range(len(object_list)):
+        if object_list[index].category == "Transportation":
+            total += object_list[index].amount
+            match (object_list[index].subcat):
                 case("Gas"):
-                    gas += object_list[x].amount
+                    gas += object_list[index].amount
                 case("Presto"):
-                    presto += object_list[x].amount
+                    presto += object_list[index].amount
                 case("Insurance"):
-                    ins += object_list[x].amount
+                    ins += object_list[index].amount
                 case("Car"):
-                    car += object_list[x].amount
+                    car += object_list[index].amount
                 case("Rideshare"):
-                    ride += object_list[x].amount
+                    ride += object_list[index].amount
 
     print("\nTransportation Costs = $", beautify(total))
     print("-- Gas = $", beautify(gas))
@@ -198,7 +201,7 @@ def annual_transportation(object_list: expense_class.Expense):
     return total
 
 
-def subscriptions_cost(object_list: expense_class.Expense):
+def subscriptions_cost(object_list: Expense):
     """
     Calculate total expenditures for subscription services.
 
@@ -213,17 +216,17 @@ def subscriptions_cost(object_list: expense_class.Expense):
     total = 0
     entertainment, gym, tech = 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Subscriptions"):
-            total += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].category == "Subscriptions":
+            total += object_list[index].amount
 
-            match (object_list[x].subcat):
+            match (object_list[index].subcat):
                 case("Entertainment"):
-                    entertainment += object_list[x].amount
+                    entertainment += object_list[index].amount
                 case("Gym"):
-                    gym += object_list[x].amount
+                    gym += object_list[index].amount
                 case("Tech"):
-                    tech += object_list[x].amount
+                    tech += object_list[index].amount
 
     print("\nSubscription Costs = $", beautify(total))
     print("-- Entertainment = $", beautify(entertainment))
@@ -233,7 +236,7 @@ def subscriptions_cost(object_list: expense_class.Expense):
     return total
 
 
-def utilities_cost(object_list: expense_class.Expense):
+def utilities_cost(object_list: Expense):
     """
     Calculate total expenditures for utilities.
 
@@ -248,17 +251,17 @@ def utilities_cost(object_list: expense_class.Expense):
     total = 0
     phone, internet, hydro = 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Utilities"):
-            total += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].category == "Utilities":
+            total += object_list[index].amount
 
-            match (object_list[x].subcat):
+            match (object_list[index].subcat):
                 case("Phone"):
-                    phone += object_list[x].amount
+                    phone += object_list[index].amount
                 case("Internet"):
-                    internet += object_list[x].amount
+                    internet += object_list[index].amount
                 case("Hydro"):
-                    hydro += object_list[x].amount
+                    hydro += object_list[index].amount
 
     print("\nUtilities Costs = $", beautify(total))
     print("-- Phone = $", beautify(phone))
@@ -268,7 +271,7 @@ def utilities_cost(object_list: expense_class.Expense):
     return total
 
 
-def food_cost(object_list: expense_class.Expense):
+def food_cost(object_list: Expense):
     """
     Calculate total expenditures for food.
 
@@ -283,17 +286,17 @@ def food_cost(object_list: expense_class.Expense):
     total = 0
     rest, grocery, alcohol = 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Food"):
-            total += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].category == "Food":
+            total += object_list[index].amount
 
-            match (object_list[x].subcat):
+            match (object_list[index].subcat):
                 case("Restaurant"):
-                    rest += object_list[x].amount
+                    rest += object_list[index].amount
                 case("Grocery"):
-                    grocery += object_list[x].amount
+                    grocery += object_list[index].amount
                 case("Alcohol"):
-                    alcohol += object_list[x].amount
+                    alcohol += object_list[index].amount
 
     print("\nFood Costs = $", beautify(total))
     print("-- Restaurants = $", beautify(rest))
@@ -303,7 +306,7 @@ def food_cost(object_list: expense_class.Expense):
     return total
 
 
-def entertainment_cost(object_list: expense_class.Expense):
+def entertainment_cost(object_list: Expense):
     """
     Calculate total expenditures for entertainment and activities.
 
@@ -318,19 +321,19 @@ def entertainment_cost(object_list: expense_class.Expense):
     total = 0
     tech, movies, gaming, events = 0, 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Entertainment"):
-            total += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].category == "Entertainment":
+            total += object_list[index].amount
 
-            match (object_list[x].subcat):
+            match (object_list[index].subcat):
                 case("Tech"):
-                    tech += object_list[x].amount
+                    tech += object_list[index].amount
                 case("Movies"):
-                    movies += object_list[x].amount
+                    movies += object_list[index].amount
                 case("Gaming"):
-                    gaming += object_list[x].amount
+                    gaming += object_list[index].amount
                 case("Events"):
-                    events += object_list[x].amount
+                    events += object_list[index].amount
 
     print("\nEntertainment Costs = $", beautify(total))
     print("-- Tech = $", beautify(tech))
@@ -341,7 +344,7 @@ def entertainment_cost(object_list: expense_class.Expense):
     return total
 
 
-def home_cost(object_list: expense_class.Expense):
+def home_cost(object_list: Expense):
     """
     Calculate total expenditures for home and office items.
 
@@ -356,17 +359,17 @@ def home_cost(object_list: expense_class.Expense):
     total = 0
     fur, clean, office = 0, 0, 0
 
-    for x in range(len(object_list)):
-        if (object_list[x].category == "Home"):
-            total += object_list[x].amount
+    for index in range(len(object_list)):
+        if object_list[index].category == "Home":
+            total += object_list[index].amount
 
-            match (object_list[x].subcat):
+            match (object_list[index].subcat):
                 case("Furnishing"):
-                    fur += object_list[x].amount
+                    fur += object_list[index].amount
                 case("Cleaning"):
-                    clean += object_list[x].amount
+                    clean += object_list[index].amount
                 case("Office"):
-                    office += object_list[x].amount
+                    office += object_list[index].amount
 
     print("\nHome and Office Costs = $", beautify(total))
     print("-- Furnishing = $", beautify(fur))
@@ -420,7 +423,8 @@ def report(object_list):
     print("\n\nSavings = $", beautify(value))
 
     # Expenditure to Income
-    value = "{:.2f}".format((expenditures / income) * 100)
+    # value = "{:.2f}".format((expenditures / income) * 100)
+    value = f'{(expenditures / income) * 100}'
     print("Spent ", value, "% of income")
     value = "{:.2f}".format((1 - (expenditures / income)) * 100)
     print("Saved ", value, "% of income")

@@ -1,4 +1,4 @@
-#!/usr/bin/env/ python3
+#!/usr/bin/env/python3
 
 # ---------------------------------------------------------------------- #
 # Author: Jonathan Licari                                                #
@@ -13,7 +13,8 @@
 
 import pandas as pd
 
-from utils import expense_class, finreport_functions
+from utils import finreport_functions
+from utils.expense_class import Expense
 
 # ---------------------------------------------------------------------- #
 # Constant Declarations
@@ -55,7 +56,7 @@ def format_object_list(input_df: pd.DataFrame):
     # Populate the object list
     for i in range(num_expense_entries):
         # Read each row of the dataframe into an instance of the Expense object
-        new_expense = expense_class.Expense(
+        new_expense = Expense(
             input_df.iloc[i][TYPE],
             input_df.iloc[i][NAME],
             input_df.iloc[i][AMT],
@@ -92,3 +93,7 @@ def main():
 
     # Perform financial computations
     compute_report(refined_data)
+
+
+if __name__ == "__main__":
+    main()
