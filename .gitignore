@@ -1,5 +1,8 @@
-config.py
-cashflow-2021.xlsx
+# Data
+.DS_Store
+.vscode/
+data/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
