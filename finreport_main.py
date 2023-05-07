@@ -11,6 +11,7 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 
+import os
 import pandas as pd
 
 from utils import finreport_functions
@@ -30,8 +31,19 @@ NOTE = 6
 
 def data_resource():
     """Return the path to the data resource."""
-    resource = r'data/cashflow-2022.xlsx'
-    return resource
+    data_path = os.getcwd() + "/data"
+    extension = ".xlsx"
+
+    data = [file for file in os.listdir(data_path) if file.endswith(extension)]
+
+    if len(data) == 0:
+        print("No xlsx files found.")
+    elif len(data) > 1:
+        print("Multiple xlsx files found.")
+    else:
+        file_path = os.path.join(data_path, data[0])
+
+    return file_path
 
 
 def read_data_file():
