@@ -89,7 +89,7 @@ def format_object_list(input_df: pd.DataFrame):
     return expense_list
 
 
-def categorical_total(expense_list: Expense):
+def categorical_total(expense_list: list[Expense]) -> None:
     """Calculate total sum for each category and sub-category."""
     category_totals = {}
 
@@ -110,11 +110,11 @@ def categorical_total(expense_list: Expense):
     # Print the total sum for each category and subcategory
     for category, subcats in category_totals.items():
         cat_total = 0
-        print(f"{category} =")
         for subcat, total in subcats.items():
             cat_total += total
-            print(f"  {subcat}: ${total}")
         print(f"{category} total = ${cat_total}")
+        for subcat, total in subcats.items():
+            print(f"  {subcat}: ${total}")
 
 
 def main():
