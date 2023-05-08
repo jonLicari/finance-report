@@ -12,9 +12,9 @@
 """Report main file."""
 
 import os
+
 import pandas as pd
 
-from utils import finreport_functions
 from utils.expense_class import Expense
 
 # ---------------------------------------------------------------------- #
@@ -89,10 +89,29 @@ def format_object_list(input_df: pd.DataFrame):
     return expense_list
 
 
-def compute_report(expenses: list):
-    """Compute the financial report using the populated expense list."""
-    # Executions List
-    finreport_functions.report(expenses)
+def categorical_total(expense_list: Expense):
+    """Calculate total sum for each category and sub-category."""
+    category_totals = {}
+
+    for expense in expense_list:
+        category = expense.category
+        subcat = expense.subcat
+        amount = expense.amount
+
+        # If the category and subcategory combination is not in the dictionary, add it
+        if category not in category_totals:
+            category_totals[category] = {}
+        if subcat not in category_totals[category]:
+            category_totals[category][subcat] = 0
+
+        # Add the amount to the category and subcategory total
+        category_totals[category][subcat] += amount
+
+    # Print the total sum for each category and subcategory
+    for category, subcats in category_totals.items():
+        print(category)
+        for subcat, total in subcats.items():
+            print(f"  {subcat}: {total}")
 
 
 def main():
@@ -103,8 +122,8 @@ def main():
     # Format data
     refined_data = format_object_list(raw_data)
 
-    # Perform financial computations
-    compute_report(refined_data)
+    # Calculate categorical totals
+    categorical_total(refined_data)
 
 
 if __name__ == "__main__":

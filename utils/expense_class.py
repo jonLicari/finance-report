@@ -22,5 +22,5 @@ class Expense:
         self.subcat = secondary
 
     def add_notes(self, notes):
-        """Ad optional notes to expense item."""
+        """Add optional notes to expense item."""
         self.notes = notes
