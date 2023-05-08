@@ -109,9 +109,12 @@ def categorical_total(expense_list: Expense):
 
     # Print the total sum for each category and subcategory
     for category, subcats in category_totals.items():
-        print(category)
+        cat_total = 0
+        print(f"{category} =")
         for subcat, total in subcats.items():
-            print(f"  {subcat}: {total}")
+            cat_total += total
+            print(f"  {subcat}: ${total}")
+        print(f"{category} total = ${cat_total}")
 
 
 def main():
