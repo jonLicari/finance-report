@@ -13,6 +13,7 @@
 
 import os
 
+import matplotlib.pyplot as plt
 import pandas as pd
 
 from utils.expense_class import Expense
@@ -115,6 +116,50 @@ def categorical_total(expense_list: list[Expense]) -> None:
         print(f"{category} total = ${cat_total}")
         for subcat, total in subcats.items():
             print(f"  {subcat}: ${total}")
+
+    plot_net_savings(expense_list)
+
+
+def plot_net_savings(expense_list: list[Expense]) -> None:
+    """Plot net savings."""
+    total_income = 0
+    total_expenses = 0
+
+    for expense in expense_list:
+        category = expense.category
+        amount = expense.amount
+
+        if category in ["Primary", "Secondary"]:
+            total_income += amount
+        else:
+            total_expenses += amount
+
+    total_savings = total_income - total_expenses
+    savings_percent = round((total_savings / total_income) * 100, 2)
+    expenses_percent = round((total_expenses / total_income) * 100, 2)
+
+    labels = ["Savings", "Expenses"]
+    sizes = [total_savings, total_expenses]
+    percent_sizes = [savings_percent, expenses_percent]
+    explode = (0.1, 0)
+
+    _, axis = plt.subplots()
+    axis.pie(
+        sizes,
+        explode=explode,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=90
+    )
+
+    axis.set_title("Net Savings")
+
+    # Add dollar amounts to labels
+    labels = [f"{label}\n${size:,} ({percent}%)"
+              for label, size, percent in zip(labels, sizes, percent_sizes)]
+    axis.legend(labels=labels, loc="best")
+
+    plt.show()
 
 
 def main():
