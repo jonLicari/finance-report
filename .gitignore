@@ -2,6 +2,7 @@
 .DS_Store
 .vscode/
 data/
+*.pdf
 
 
 # Byte-compiled / optimized / DLL files

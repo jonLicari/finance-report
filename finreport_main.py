@@ -11,10 +11,12 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 
+import tempfile
 import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from fpdf import FPDF
 
 from utils.expense_class import Expense
 
@@ -117,8 +119,98 @@ def categorical_total(expense_list: list[Expense]) -> None:
         for subcat, total in subcats.items():
             print(f"  {subcat}: ${total}")
 
-    plot_net_savings(expense_list)
-    plot_income(expense_list)
+    # plot_net_savings(expense_list)
+    # plot_income(expense_list)
+    # plot_secondary_subcat(expense_list)
+    # plot_category_expenses(expense_list)
+    create_report(expense_list)
+
+
+def plot_to_image(fig: plt.Figure):
+    """Convert a Matplotlib figure to a PIL Image and return it."""
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as f:
+        fig.savefig(f, format='png')
+        return f.name
+
+
+def create_report(expense_list):
+    """Create pdf report of all figures."""
+    # Create the figures
+    fig1 = plot_net_savings(expense_list)
+    fig2 = plot_income(expense_list)
+    fig3 = plot_secondary_subcat(expense_list)
+    fig4 = plot_category_expenses(expense_list)
+
+    # Convert the figures to images
+    img1 = plot_to_image(fig1)
+    img2 = plot_to_image(fig2)
+    img3 = plot_to_image(fig3)
+    img4 = plot_to_image(fig4)
+
+    # Create the PDF document
+    pdf = FPDF()
+    pdf.add_page()
+
+    # Add the figures to the PDF document
+    pdf.image(img1, w=200)
+    pdf.add_page()
+    pdf.image(img2, w=200)
+    pdf.add_page()
+    pdf.image(img3, w=200)
+    pdf.add_page()
+    pdf.image(img4, w=200)
+
+    # Save the PDF document
+    pdf.output("expense_report.pdf")
+
+
+def plot_category_expenses(expense_list):
+    """Plot expense categories as a pie chart."""
+    # Initialize dictionary to store category totals
+    category_totals = {}
+    for exp in expense_list:
+        # Check if expense is of type "Expense"
+        if exp.exp_type == "Expense":
+            # If category is not already a key in dictionary, add it
+            if exp.category not in category_totals:
+                category_totals[exp.category] = 0
+            # Add expense amount to category total
+            category_totals[exp.category] += exp.amount
+    # Plot pie chart
+    fig, _ = plt.subplots()
+    plt.pie(list(category_totals.values()), labels=list(category_totals.keys()), autopct='%1.1f%%')
+    plt.title("Expense Categories")
+    plt.show()
+    return fig
+
+
+def plot_secondary_subcat(expense_list):
+    """Plot Secondary income subcategories."""
+    # Filter the expenses to only include those in the Secondary category
+    secondary_expenses = [expense for expense in expense_list if expense.category == 'Secondary']
+
+    # Create a dictionary to store the total amounts for each subcategory
+    subcat_totals = {}
+    for expense in secondary_expenses:
+        subcat = expense.subcat
+        amount = expense.amount
+        if subcat not in subcat_totals:
+            subcat_totals[subcat] = 0
+        subcat_totals[subcat] += amount
+
+    # Create a list of the subcategory labels and their corresponding amounts
+    labels = list(subcat_totals.keys())
+    amounts = list(subcat_totals.values())
+
+    # Plot the pie chart
+    fig, _ = plt.subplots()
+    plt.pie(amounts, labels=labels, autopct='%1.1f%%')
+    plt.title('Secondary Subcategory Expenses')
+    plt.legend(labels, loc='best')
+
+    # Display the chart
+    # plt.show()
+    return fig
 
 
 def plot_income(expense_list: list[Expense]) -> None:
@@ -152,15 +244,17 @@ def plot_income(expense_list: list[Expense]) -> None:
     subcat_labels = [f"{label} (${value:.2f}, {percent:.2f}%)" for label, value, percent in zip(combined_subtotals.keys(), combined_subtotals.values(), percentages)]
 
     # Plot the pie chart
+    fig, _ = plt.subplots()
     plt.pie(combined_subtotals.values(), labels=None, startangle=90, autopct='')
     plt.legend(subcat_labels, loc='best', bbox_to_anchor=(1.0, 0.5))
 
     # Set the title of the chart
     plt.title("Primary and Secondary Subcategory Expenses")
-    plt.show()
+    # plt.show()
+    return fig
 
 
-def plot_net_savings(expense_list: list[Expense]) -> None:
+def plot_net_savings(expense_list: list[Expense]):
     """Plot net savings."""
     total_income = 0
     total_expenses = 0
@@ -183,7 +277,7 @@ def plot_net_savings(expense_list: list[Expense]) -> None:
     percent_sizes = [savings_percent, expenses_percent]
     explode = (0.1, 0)
 
-    _, axis = plt.subplots()
+    fig, axis = plt.subplots()
     axis.pie(
         sizes,
         explode=explode,
@@ -199,7 +293,8 @@ def plot_net_savings(expense_list: list[Expense]) -> None:
               for label, size, percent in zip(labels, sizes, percent_sizes)]
     axis.legend(labels=labels, loc="best")
 
-    plt.show()
+    # plt.show()
+    return fig
 
 
 def main():
