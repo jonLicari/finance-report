@@ -11,8 +11,8 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 
-import tempfile
 import os
+import tempfile
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -213,7 +213,7 @@ def plot_secondary_subcat(expense_list):
     return fig
 
 
-def plot_income(expense_list: list[Expense]) -> None:
+def plot_income(expense_list: list[Expense]):
     """Plot a pie chart of all subcategories of Primary and Secondary combined."""
     primary_total = 0
     secondary_total = 0
