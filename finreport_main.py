@@ -36,7 +36,7 @@ def data_resource():
     """Return the path to the data resource."""
     data_path = os.getcwd() + "/data"
     extension = ".xlsx"
-
+    file_path = ""
     data = [file for file in os.listdir(data_path) if file.endswith(extension)]
 
     if len(data) == 0:
@@ -101,7 +101,7 @@ def categorical_total(expense_list: list[Expense]) -> None:
         subcat = expense.subcat
         amount = expense.amount
 
-        # If the category and subcategory combination is not in the dictionary, add it
+        # If the category & subcategory combo isnt in the dictionary, add it
         if category not in category_totals:
             category_totals[category] = {}
         if subcat not in category_totals[category]:
