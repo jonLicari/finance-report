@@ -126,7 +126,7 @@ def categorical_total(expense_list: list[Expense]) -> None:
     create_report(expense_list)
 
 
-def plot_to_image(fig: plt.Figure):
+def plot_to_image(fig: plt.Figure):  # type: ignore
     """Convert a Matplotlib figure to a PIL Image and return it."""
     with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as f:
         fig.savefig(f, format='png')
@@ -178,7 +178,11 @@ def plot_category_expenses(expense_list):
             category_totals[exp.category] += exp.amount
     # Plot pie chart
     fig, _ = plt.subplots()
-    plt.pie(list(category_totals.values()), labels=list(category_totals.keys()), autopct='%1.1f%%')
+    plt.pie(
+        list(category_totals.values()),
+        labels=list(category_totals.keys()),
+        autopct='%1.1f%%'
+        )
     plt.title("Expense Categories")
     plt.show()
     return fig
@@ -187,7 +191,9 @@ def plot_category_expenses(expense_list):
 def plot_secondary_subcat(expense_list):
     """Plot Secondary income subcategories."""
     # Filter the expenses to only include those in the Secondary category
-    secondary_expenses = [expense for expense in expense_list if expense.category == 'Secondary']
+    secondary_expenses = [expense
+                          for expense
+                          in expense_list if expense.category == 'Secondary']
 
     # Create a dictionary to store the total amounts for each subcategory
     subcat_totals = {}
@@ -214,7 +220,7 @@ def plot_secondary_subcat(expense_list):
 
 
 def plot_income(expense_list: list[Expense]):
-    """Plot a pie chart of all subcategories of Primary and Secondary combined."""
+    """Plot all Income subcategories combined."""
     primary_total = 0
     secondary_total = 0
     primary_subtotals = {}
@@ -238,14 +244,24 @@ def plot_income(expense_list: list[Expense]):
     combined_subtotals = {**primary_subtotals, **secondary_subtotals}
 
     # Calculate percentages for each subcategory
-    percentages = [value / (primary_total + secondary_total) * 100 for value in combined_subtotals.values()]
+    percentages = [value / (primary_total + secondary_total) * 100
+                   for value in combined_subtotals.values()]
 
     # Create a list of labels for the legend
-    subcat_labels = [f"{label} (${value:.2f}, {percent:.2f}%)" for label, value, percent in zip(combined_subtotals.keys(), combined_subtotals.values(), percentages)]
+    subcat_labels = [f"{label} (${value:.2f}, {percent:.2f}%)"
+                     for label, value, percent
+                     in zip(
+                         combined_subtotals.keys(),
+                         combined_subtotals.values(),
+                         percentages)]
 
     # Plot the pie chart
     fig, _ = plt.subplots()
-    plt.pie(combined_subtotals.values(), labels=None, startangle=90, autopct='')
+    plt.pie(
+        combined_subtotals.values(),
+        labels=None,  # type: ignore
+        startangle=90,
+        autopct='')
     plt.legend(subcat_labels, loc='best', bbox_to_anchor=(1.0, 0.5))
 
     # Set the title of the chart
