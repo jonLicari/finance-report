@@ -55,7 +55,7 @@ def read_data_file():
 
     # Number data stored as float64 by default.
     # Convert to string to avoid floating point operations
-    raw_data_file_df['Amount'] = raw_data_file_df['Amount'].astype(str)
+    raw_data_file_df["Amount"] = raw_data_file_df["Amount"].astype(str)
 
     return raw_data_file_df
 
@@ -77,10 +77,7 @@ def format_object_list(input_df: pd.DataFrame):
             input_df.iloc[i][AMT],
             input_df.iloc[i][DATE],
         )
-        new_expense.categorize(
-            input_df.iloc[i][CAT],
-            input_df.iloc[i][SCAT]
-        )
+        new_expense.categorize(input_df.iloc[i][CAT], input_df.iloc[i][SCAT])
         new_expense.add_notes(input_df.iloc[i][NOTE])
 
         # add new Expense item to the expense object list
@@ -126,10 +123,10 @@ def categorical_total(expense_list: list[Expense]) -> None:
     create_report(expense_list)
 
 
-def plot_to_image(fig: plt.Figure):
+def plot_to_image(fig: plt.Figure):  # type: ignore
     """Convert a Matplotlib figure to a PIL Image and return it."""
-    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as f:
-        fig.savefig(f, format='png')
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as f:
+        fig.savefig(f, format="png")
         return f.name
 
 
@@ -178,7 +175,11 @@ def plot_category_expenses(expense_list):
             category_totals[exp.category] += exp.amount
     # Plot pie chart
     fig, _ = plt.subplots()
-    plt.pie(list(category_totals.values()), labels=list(category_totals.keys()), autopct='%1.1f%%')
+    plt.pie(
+        list(category_totals.values()),
+        labels=list(category_totals.keys()),
+        autopct="%1.1f%%",
+    )
     plt.title("Expense Categories")
     plt.show()
     return fig
@@ -187,7 +188,9 @@ def plot_category_expenses(expense_list):
 def plot_secondary_subcat(expense_list):
     """Plot Secondary income subcategories."""
     # Filter the expenses to only include those in the Secondary category
-    secondary_expenses = [expense for expense in expense_list if expense.category == 'Secondary']
+    secondary_expenses = [
+        expense for expense in expense_list if expense.category == "Secondary"
+    ]
 
     # Create a dictionary to store the total amounts for each subcategory
     subcat_totals = {}
@@ -204,9 +207,9 @@ def plot_secondary_subcat(expense_list):
 
     # Plot the pie chart
     fig, _ = plt.subplots()
-    plt.pie(amounts, labels=labels, autopct='%1.1f%%')
-    plt.title('Secondary Subcategory Expenses')
-    plt.legend(labels, loc='best')
+    plt.pie(amounts, labels=labels, autopct="%1.1f%%")
+    plt.title("Secondary Subcategory Expenses")
+    plt.legend(labels, loc="best")
 
     # Display the chart
     # plt.show()
@@ -214,7 +217,7 @@ def plot_secondary_subcat(expense_list):
 
 
 def plot_income(expense_list: list[Expense]):
-    """Plot a pie chart of all subcategories of Primary and Secondary combined."""
+    """Plot all Income subcategories combined."""
     primary_total = 0
     secondary_total = 0
     primary_subtotals = {}
@@ -238,15 +241,28 @@ def plot_income(expense_list: list[Expense]):
     combined_subtotals = {**primary_subtotals, **secondary_subtotals}
 
     # Calculate percentages for each subcategory
-    percentages = [value / (primary_total + secondary_total) * 100 for value in combined_subtotals.values()]
+    percentages = [
+        value / (primary_total + secondary_total) * 100
+        for value in combined_subtotals.values()
+    ]
 
     # Create a list of labels for the legend
-    subcat_labels = [f"{label} (${value:.2f}, {percent:.2f}%)" for label, value, percent in zip(combined_subtotals.keys(), combined_subtotals.values(), percentages)]
+    subcat_labels = [
+        f"{label} (${value:.2f}, {percent:.2f}%)"
+        for label, value, percent in zip(
+            combined_subtotals.keys(), combined_subtotals.values(), percentages
+        )
+    ]
 
     # Plot the pie chart
     fig, _ = plt.subplots()
-    plt.pie(combined_subtotals.values(), labels=None, startangle=90, autopct='')
-    plt.legend(subcat_labels, loc='best', bbox_to_anchor=(1.0, 0.5))
+    plt.pie(
+        combined_subtotals.values(),
+        labels=None,  # type: ignore
+        startangle=90,
+        autopct="",
+    )
+    plt.legend(subcat_labels, loc="best", bbox_to_anchor=(1.0, 0.5))
 
     # Set the title of the chart
     plt.title("Primary and Secondary Subcategory Expenses")
@@ -278,19 +294,15 @@ def plot_net_savings(expense_list: list[Expense]):
     explode = (0.1, 0)
 
     fig, axis = plt.subplots()
-    axis.pie(
-        sizes,
-        explode=explode,
-        labels=labels,
-        autopct='%1.1f%%',
-        startangle=90
-    )
+    axis.pie(sizes, explode=explode, labels=labels, autopct="%1.1f%%", startangle=90)
 
     axis.set_title("Net Savings")
 
     # Add dollar amounts to labels
-    labels = [f"{label}\n${size:,} ({percent}%)"
-              for label, size, percent in zip(labels, sizes, percent_sizes)]
+    labels = [
+        f"{label}\n${size:,} ({percent}%)"
+        for label, size, percent in zip(labels, sizes, percent_sizes)
+    ]
     axis.legend(labels=labels, loc="best")
 
     # plt.show()
