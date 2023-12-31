@@ -1,6 +1,15 @@
 # Cashflow Reporting
 Organizes financial data from xlsx files and generates a report and graphic summaries
 
+## Expense Item Categories
+| Food	| Shopping	| Transportation	| Utilities	| Entertainment	| Career |	Health |	Income	|
+| ----- | --------- | --------------- | --------- | ------------- | ------ | ------- | -------- |
+| Restaurant	| Clothing	| Gas	| Phone	| Gaming	| | | Salary | 	
+| Grocery	|Gifts	| Transit	Internet	| Events	| | | | Other	|
+| Alcohol	|Other	| Insurance	| Hydro	| Other	|			
+|	|	| Car	| Rent | 					
+|	|	| |	Tenant Insurance |			
+
 ## Sample Data
 
 | Type   | Name                    | Amount | Date       | Category       | Sub-category       | Comments            |
