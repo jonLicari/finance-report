@@ -20,6 +20,8 @@ from fpdf import FPDF
 
 from utils.expense_class import Expense
 
+from typing import List
+
 # ---------------------------------------------------------------------- #
 # Constant Declarations
 # ---------------------------------------------------------------------- #
@@ -34,7 +36,7 @@ NOTE = 6
 
 def data_resource():
     """Return the path to the data resource."""
-    data_path = os.getcwd() + "/data"
+    data_path = os.path.join(os.getcwd(),"data")
     extension = ".xlsx"
     file_path = ""
     data = [file for file in os.listdir(data_path) if file.endswith(extension)]
@@ -88,8 +90,7 @@ def format_object_list(input_df: pd.DataFrame):
 
     return expense_list
 
-
-def categorical_total(expense_list: list[Expense]) -> None:
+def categorical_total(expense_list: List[Expense]) -> None:
     """Calculate total sum for each category and sub-category."""
     category_totals = {}
 
@@ -121,7 +122,6 @@ def categorical_total(expense_list: list[Expense]) -> None:
     # plot_secondary_subcat(expense_list)
     # plot_category_expenses(expense_list)
     create_report(expense_list)
-
 
 def plot_to_image(fig: plt.Figure):  # type: ignore
     """Convert a Matplotlib figure to a PIL Image and return it."""
@@ -174,7 +174,7 @@ def plot_category_expenses(expense_list):
             # Add expense amount to category total
             category_totals[exp.category] += exp.amount
     # Plot pie chart
-    fig, _ = plt.subplots()
+    fig, _ = plt.subplots(figsize = (9,9))
     plt.pie(
         list(category_totals.values()),
         labels=list(category_totals.keys()),
@@ -206,7 +206,7 @@ def plot_secondary_subcat(expense_list):
     amounts = list(subcat_totals.values())
 
     # Plot the pie chart
-    fig, _ = plt.subplots()
+    fig, _ = plt.subplots(figsize = (9,9))
     plt.pie(amounts, labels=labels, autopct="%1.1f%%")
     plt.title("Secondary Subcategory Expenses")
     plt.legend(labels, loc="best")
@@ -216,7 +216,7 @@ def plot_secondary_subcat(expense_list):
     return fig
 
 
-def plot_income(expense_list: list[Expense]):
+def plot_income(expense_list: List[Expense]):
     """Plot all Income subcategories combined."""
     primary_total = 0
     secondary_total = 0
@@ -224,13 +224,13 @@ def plot_income(expense_list: list[Expense]):
     secondary_subtotals = {}
 
     for expense in expense_list:
-        if expense.category == "Primary":
+        if expense.category in ["Primary", "Income"]:
             if expense.subcat not in primary_subtotals:
                 primary_subtotals[expense.subcat] = expense.amount
             else:
                 primary_subtotals[expense.subcat] += expense.amount
             primary_total += expense.amount
-        elif expense.category == "Secondary":
+        elif expense.category in ["Secondary", "Career"]:
             if expense.subcat not in secondary_subtotals:
                 secondary_subtotals[expense.subcat] = expense.amount
             else:
@@ -255,14 +255,14 @@ def plot_income(expense_list: list[Expense]):
     ]
 
     # Plot the pie chart
-    fig, _ = plt.subplots()
+    fig, _ = plt.subplots(figsize = (9,9))
     plt.pie(
         combined_subtotals.values(),
         labels=None,  # type: ignore
         startangle=90,
         autopct="",
     )
-    plt.legend(subcat_labels, loc="best", bbox_to_anchor=(1.0, 0.5))
+    plt.legend(subcat_labels, loc=(0.5,-0.1))
 
     # Set the title of the chart
     plt.title("Primary and Secondary Subcategory Expenses")
@@ -270,16 +270,16 @@ def plot_income(expense_list: list[Expense]):
     return fig
 
 
-def plot_net_savings(expense_list: list[Expense]):
+def plot_net_savings(expense_list: List[Expense]):
     """Plot net savings."""
     total_income = 0
     total_expenses = 0
-
+    
     for expense in expense_list:
         category = expense.category
         amount = expense.amount
 
-        if category in ["Primary", "Secondary"]:
+        if category in ["Primary", "Secondary", "Income", "Career"]:
             total_income += amount
         else:
             total_expenses += amount
@@ -293,7 +293,8 @@ def plot_net_savings(expense_list: list[Expense]):
     percent_sizes = [savings_percent, expenses_percent]
     explode = (0.1, 0)
 
-    fig, axis = plt.subplots()
+    fig, axis = plt.subplots(figsize = (9,9))
+    # prob add condition here to account for negative budgets... this causes error
     axis.pie(sizes, explode=explode, labels=labels, autopct="%1.1f%%", startangle=90)
 
     axis.set_title("Net Savings")
@@ -303,7 +304,8 @@ def plot_net_savings(expense_list: list[Expense]):
         f"{label}\n${size:,} ({percent}%)"
         for label, size, percent in zip(labels, sizes, percent_sizes)
     ]
-    axis.legend(labels=labels, loc="best")
+    axis.legend(labels=labels, loc = (0.5,-0.1))
+    # axis.legend(labels=labels, loc = "lower center")
 
     # plt.show()
     return fig
