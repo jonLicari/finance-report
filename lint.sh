@@ -18,7 +18,7 @@ fi
 
 # Run Black on Python files
 echo "Running Black..."
-python3 -m black .
+python3 -m black . || python -m black .
 
 # Add other linters or formatters as needed
 # For example, you can add Flake8 for more comprehensive linting
