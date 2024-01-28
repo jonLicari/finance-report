@@ -32,10 +32,26 @@ SCAT = 5
 NOTE = 6
 
 
+def user_datset_selection(limit: int) -> int:
+    '''Prompt user to select index of the datset they want to use.'''
+    while True:
+        try:
+            raw_input = int(input("Select dataset to be processed: "))
+
+            # validate iuser input
+            if 0 <= raw_input <= limit:
+                return raw_input
+
+            print("Selection not valid. Please try again.")
+
+        except ValueError:
+            print("Invalid input. Please enter a valid integer index.")
+
+
 def data_resource():
     """Return the path to the data resource."""
     base_path = os.getcwd() + "/data"
-    sample_dataset_path = "/data/sample/sample.xlsx"
+    sample_dataset_path = os.getcwd() + "/data/sample/sample.xlsx"
     extension = ".xlsx"
     file_path = ""
     file_list = [file for file in os.listdir(base_path) if file.endswith(extension)]
@@ -45,7 +61,29 @@ def data_resource():
         file_path = sample_dataset_path
 
     elif len(file_list) > 1:
-        print("Multiple xlsx files found. Select the dataset to be used.")
+        print("Multiple user datasets found. Select the dataset to be used:")
+
+        # list file selection options
+        count = 0
+        for i, name in enumerate(file_list):
+            print(f"File {i}: {name}")
+            count = i
+        count = count + 1
+        print(f"File {count}: sample.xlsx")
+
+        # take user input
+        dataset_selection = user_datset_selection(count)
+
+        if dataset_selection == count:
+            print("Selecting sample dataset")
+            file_path = sample_dataset_path
+
+        elif dataset_selection < count:
+            file_path = file_list[dataset_selection]
+            print("Selecting ", file_list[dataset_selection])
+
+        else:
+            print("You fucked it all up. Well done.")
 
     else:
         file_path = os.path.join(base_path, file_list[0])
