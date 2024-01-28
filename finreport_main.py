@@ -34,17 +34,21 @@ NOTE = 6
 
 def data_resource():
     """Return the path to the data resource."""
-    data_path = os.getcwd() + "/data"
+    base_path = os.getcwd() + "/data"
+    sample_dataset_path = "/data/sample/sample.xlsx"
     extension = ".xlsx"
     file_path = ""
-    data = [file for file in os.listdir(data_path) if file.endswith(extension)]
+    file_list = [file for file in os.listdir(base_path) if file.endswith(extension)]
 
-    if len(data) == 0:
-        print("No xlsx files found.")
-    elif len(data) > 1:
-        print("Multiple xlsx files found.")
+    if len(file_list) == 0:
+        print("No user data found. Using sample dataset...")
+        file_path = sample_dataset_path
+
+    elif len(file_list) > 1:
+        print("Multiple xlsx files found. Select the dataset to be used.")
+
     else:
-        file_path = os.path.join(data_path, data[0])
+        file_path = os.path.join(base_path, file_list[0])
 
     return file_path
 
