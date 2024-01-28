@@ -3,9 +3,9 @@ Organizes financial data from xlsx files and generates a report with graphic sum
 
 # Setup
 1. Clone repo
-2. Setup virtual environemnt & install dependencies:`sh setup.sh`
+2. Setup virtual environemnt & install dependencies: `sh setup.sh`
 3. Lint the program: `sh lint.sh`
-4. Run the program `sh execute.sh`
+4. Run the program: `sh execute.sh`
 
 Upload personal datasets or use public sample data		
 
@@ -27,10 +27,10 @@ Upload personal datasets or use public sample data
 | Food	| Shopping	| Transportation	| Utilities	| Entertainment	| Career |	Health |	Income	|
 | ----- | --------- | --------------- | --------- | ------------- | ------ | ------- | -------- |
 | Restaurant	| Clothing	| Gas	| Phone	| Gaming	| | | Salary | 	
-| Grocery	|Gifts	| Transit	Internet	| Events	| | | | Other	|
+| Grocery	|Gifts	| Transit	| Internet	| Events	| | | Other	|
 | Alcohol	|Other	| Insurance	| Hydro	| Other	|			
 |	|	| Car	| Rent | 					
-|	|	| |	Tenant Insurance |	
+|	|	| Other |	Tenant Insurance |	
 
 ## Cashflow Item
 - Type: 
