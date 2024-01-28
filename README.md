@@ -40,3 +40,10 @@ Organizes financial data from xlsx files and generates a report and graphic summ
   - Expense sub-category (e.g. transportation -> gas, transit)
 - Notes
   - additional description of item
+
+
+# Setup
+1. Clone repo
+2. Setup virtual environemnt & install dependencies:`sh setup.sh`
+3. Lint the program: `sh lint.sh`
+4. Run the program `sh execute.sh`
