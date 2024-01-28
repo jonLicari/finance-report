@@ -1,7 +1,7 @@
 # Data
 .DS_Store
 .vscode/
-data/
+data/*.xlsx
 *.pdf
 
 
