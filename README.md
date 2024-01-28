@@ -1,14 +1,13 @@
 # Cashflow Reporting
-Organizes financial data from xlsx files and generates a report and graphic summaries
+Organizes financial data from xlsx files and generates a report with graphic summaries
 
-## Expense Item Categories
-| Food	| Shopping	| Transportation	| Utilities	| Entertainment	| Career |	Health |	Income	|
-| ----- | --------- | --------------- | --------- | ------------- | ------ | ------- | -------- |
-| Restaurant	| Clothing	| Gas	| Phone	| Gaming	| | | Salary | 	
-| Grocery	|Gifts	| Transit	Internet	| Events	| | | | Other	|
-| Alcohol	|Other	| Insurance	| Hydro	| Other	|			
-|	|	| Car	| Rent | 					
-|	|	| |	Tenant Insurance |			
+# Setup
+1. Clone repo
+2. Setup virtual environemnt & install dependencies:`sh setup.sh`
+3. Lint the program: `sh lint.sh`
+4. Run the program `sh execute.sh`
+
+Upload personal datasets or use public sample data		
 
 ## Sample Data
 
@@ -24,6 +23,14 @@ Organizes financial data from xlsx files and generates a report and graphic summ
 | Income | Side Gig                | 120.00 | 06/01/2023 | Career         |                     | Consulting project  |
 | Expense| Dining Out              | 60.00  | 07/01/2023 | Food           | Restaurant          | Dinner with friends  |
 
+## Expense Item Categories
+| Food	| Shopping	| Transportation	| Utilities	| Entertainment	| Career |	Health |	Income	|
+| ----- | --------- | --------------- | --------- | ------------- | ------ | ------- | -------- |
+| Restaurant	| Clothing	| Gas	| Phone	| Gaming	| | | Salary | 	
+| Grocery	|Gifts	| Transit	Internet	| Events	| | | | Other	|
+| Alcohol	|Other	| Insurance	| Hydro	| Other	|			
+|	|	| Car	| Rent | 					
+|	|	| |	Tenant Insurance |	
 
 ## Cashflow Item
 - Type: 
@@ -40,10 +47,3 @@ Organizes financial data from xlsx files and generates a report and graphic summ
   - Expense sub-category (e.g. transportation -> gas, transit)
 - Notes
   - additional description of item
-
-
-# Setup
-1. Clone repo
-2. Setup virtual environemnt & install dependencies:`sh setup.sh`
-3. Lint the program: `sh lint.sh`
-4. Run the program `sh execute.sh`

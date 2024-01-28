@@ -33,7 +33,7 @@ NOTE = 6
 
 
 def user_datset_selection(limit: int) -> int:
-    '''Prompt user to select index of the datset they want to use.'''
+    """Prompt user to select index of the datset they want to use."""
     while True:
         try:
             raw_input = int(input("Select dataset to be processed: "))
@@ -48,7 +48,7 @@ def user_datset_selection(limit: int) -> int:
             print("Invalid input. Please enter a valid integer index.")
 
 
-def data_resource():
+def data_resource() -> str:
     """Return the path to the data resource."""
     base_path = os.getcwd() + "/data"
     sample_dataset_path = os.getcwd() + "/data/sample/sample.xlsx"
@@ -79,11 +79,11 @@ def data_resource():
             file_path = sample_dataset_path
 
         elif dataset_selection < count:
-            file_path = file_list[dataset_selection]
+            file_path = os.path.join(base_path, file_list[dataset_selection])
             print("Selecting ", file_list[dataset_selection])
 
         else:
-            print("You fucked it all up. Well done.")
+            print("You fucked it all up.")
 
     else:
         file_path = os.path.join(base_path, file_list[0])
