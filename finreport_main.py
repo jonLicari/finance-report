@@ -175,13 +175,13 @@ def plot_to_image(fig: plt.Figure):  # type: ignore
 def create_report(expense_list):
     """Create pdf report of all figures."""
     # Create the figures
-    fig1 = plot_net_savings(expense_list)
+    # fig1 = plot_net_savings(expense_list)
     fig2 = plot_income(expense_list)
     fig3 = plot_secondary_subcat(expense_list)
     fig4 = plot_category_expenses(expense_list)
 
     # Convert the figures to images
-    img1 = plot_to_image(fig1)
+    # img1 = plot_to_image(fig1)
     img2 = plot_to_image(fig2)
     img3 = plot_to_image(fig3)
     img4 = plot_to_image(fig4)
@@ -191,8 +191,8 @@ def create_report(expense_list):
     pdf.add_page()
 
     # Add the figures to the PDF document
-    pdf.image(img1, w=200)
-    pdf.add_page()
+    # pdf.image(img1, w=200)
+    # pdf.add_page()
     pdf.image(img2, w=200)
     pdf.add_page()
     pdf.image(img3, w=200)
