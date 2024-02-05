@@ -177,14 +177,12 @@ def create_report(expense_list):
     # Create the figures
     fig1 = plot_net_savings(expense_list)
     fig2 = plot_income(expense_list)
-    fig3 = plot_secondary_subcat(expense_list)
-    fig4 = plot_category_expenses(expense_list)
+    fig3 = plot_category_expenses(expense_list)
 
     # Convert the figures to images
     img1 = plot_to_image(fig1)
     img2 = plot_to_image(fig2)
     img3 = plot_to_image(fig3)
-    img4 = plot_to_image(fig4)
 
     # Create the PDF document
     pdf = FPDF()
@@ -196,8 +194,6 @@ def create_report(expense_list):
     pdf.image(img2, w=200)
     pdf.add_page()
     pdf.image(img3, w=200)
-    pdf.add_page()
-    pdf.image(img4, w=200)
 
     # Save the PDF document
     pdf.output("expense_report.pdf")
@@ -223,83 +219,46 @@ def plot_category_expenses(expense_list):
         autopct="%1.1f%%",
     )
     plt.title("Expense Categories")
-    plt.show()
-    return fig
-
-
-def plot_secondary_subcat(expense_list):
-    """Plot Secondary income subcategories."""
-    # Filter the expenses to only include those in the Secondary category
-    secondary_expenses = [
-        expense for expense in expense_list if expense.category == "Secondary"
-    ]
-
-    # Create a dictionary to store the total amounts for each subcategory
-    subcat_totals = {}
-    for expense in secondary_expenses:
-        subcat = expense.subcat
-        amount = expense.amount
-        if subcat not in subcat_totals:
-            subcat_totals[subcat] = 0
-        subcat_totals[subcat] += amount
-
-    # Create a list of the subcategory labels and their corresponding amounts
-    labels = list(subcat_totals.keys())
-    amounts = list(subcat_totals.values())
-
-    # Plot the pie chart
-    fig, _ = plt.subplots()
-    plt.pie(amounts, labels=labels, autopct="%1.1f%%")
-    plt.title("Secondary Subcategory Expenses")
-    plt.legend(labels, loc="best")
-
-    # Display the chart
-    # plt.show()
+    plt.show(block=False)  # since we have the pdf is there any point to these?
     return fig
 
 
 def plot_income(expense_list: list[Expense]):
     """Plot all Income subcategories combined."""
-    primary_total = 0
-    secondary_total = 0
-    primary_subtotals = {}
-    secondary_subtotals = {}
+    income_total = 0
+    non_salary_total = 0
+    income_subtotals = {}
 
     for expense in expense_list:
-        if expense.category == "Primary":
-            if expense.subcat not in primary_subtotals:
-                primary_subtotals[expense.subcat] = expense.amount
-            else:
-                primary_subtotals[expense.subcat] += expense.amount
-            primary_total += expense.amount
-        elif expense.category == "Secondary":
-            if expense.subcat not in secondary_subtotals:
-                secondary_subtotals[expense.subcat] = expense.amount
-            else:
-                secondary_subtotals[expense.subcat] += expense.amount
-            secondary_total += expense.amount
+        if expense.category == "Income":
+            income_total += expense.amount
 
-    # Combine subtotals for Primary and Secondary into one dictionary
-    combined_subtotals = {**primary_subtotals, **secondary_subtotals}
+            if expense.subcat not in income_subtotals:
+                if expense.subcat == "":
+                    income_subtotals["Other"] = expense.amount
+                else:
+                    income_subtotals[expense.subcat] = expense.amount
+            else:
+                income_subtotals[expense.subcat] += expense.amount
 
     # Calculate percentages for each subcategory
     percentages = [
-        value / (primary_total + secondary_total) * 100
-        for value in combined_subtotals.values()
+        value / (income_total + non_salary_total) * 100
+        for value in income_subtotals.values()
     ]
 
     # Create a list of labels for the legend
     subcat_labels = [
         f"{label} (${value:.2f}, {percent:.2f}%)"
         for label, value, percent in zip(
-            combined_subtotals.keys(), combined_subtotals.values(), percentages
+            income_subtotals.keys(), income_subtotals.values(), percentages
         )
     ]
 
     # Plot the pie chart
     fig, _ = plt.subplots()
     plt.pie(
-        combined_subtotals.values(),
+        income_subtotals.values(),
         labels=None,  # type: ignore
         startangle=90,
         autopct="",
@@ -307,8 +266,8 @@ def plot_income(expense_list: list[Expense]):
     plt.legend(subcat_labels, loc="best", bbox_to_anchor=(1.0, 0.5))
 
     # Set the title of the chart
-    plt.title("Primary and Secondary Subcategory Expenses")
-    # plt.show()
+    plt.title("Income Distribution")
+    # plt.show(block=False)
     return fig
 
 
@@ -321,14 +280,19 @@ def plot_net_savings(expense_list: list[Expense]):
         category = expense.category
         amount = expense.amount
 
-        if category in ["Primary", "Secondary"]:
+        if category in ["Income"]:
             total_income += amount
         else:
             total_expenses += amount
 
     total_savings = total_income - total_expenses
-    savings_percent = round((total_savings / total_income) * 100, 2)
-    expenses_percent = round((total_expenses / total_income) * 100, 2)
+
+    if total_income != 0:
+        savings_percent = round((total_savings / total_income) * 100, 2)
+        expenses_percent = round((total_expenses / total_income) * 100, 2)
+    else:
+        savings_percent = 0
+        expenses_percent = 100
 
     labels = ["Savings", "Expenses"]
     sizes = [total_savings, total_expenses]
@@ -347,7 +311,7 @@ def plot_net_savings(expense_list: list[Expense]):
     ]
     axis.legend(labels=labels, loc="best")
 
-    # plt.show()
+    # plt.show(block=False)
     return fig
 
 
