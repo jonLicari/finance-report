@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python3 ./finreport_main.py
+sh lint.sh
+python3 ./main.py

@@ -11,7 +11,20 @@ then
 
     # Check if installation was successful
     if [ $? -ne 0 ]; then
-        echo "Error: Failed to install Black. Please install it manually using 'pip install black'."
+        echo "Error: Failed to install Black."
+        exit 1
+    fi
+fi
+
+# Check if Pylint is installed
+if ! command -v pylint &> /dev/null
+then
+    echo "Error: Pylint is not installed. Installing via pip3..."
+    pip3 install pylint
+
+    # Check if installation was successful
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to install Pylint."
         exit 1
     fi
 fi
@@ -21,8 +34,7 @@ echo "Running Black..."
 python3 -m black . || python -m black .
 
 # Add other linters or formatters as needed
-# For example, you can add Flake8 for more comprehensive linting
-# echo "Running Flake8..."
-# flake8 .
+echo "Running Pylint..."
+pylint .
 
 echo "Linting complete."
