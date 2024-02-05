@@ -30,7 +30,7 @@ Upload personal datasets or use public sample data
 | Food       | Shopping | Transportation   | Utilities        | Entertainment | Career | Health | Income |
 | ---------- | -------- | ---------------- | ---------------- | ------------- | ------ | ------ | ------ |
 | Restaurant | Clothing | Gas              | Phone            | Gaming        |        |        | Salary |
-| Grocery    | Gifts    | Transit	Internet | Events           |               |        |        | Other  |
+| Grocery    | Gifts    | Transit	         | Internet         | Events        |        |        | Other  |
 | Alcohol    | Other    | Insurance        | Hydro            | Other         |        |        |        |
 |            |          | Car              | Rent             |               |        |        |        |
 |            |          |                  | Tenant Insurance |               |        |        |        |
