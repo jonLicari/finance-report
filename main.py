@@ -12,10 +12,10 @@
 """Report main file."""
 import pandas as pd
 
+from calculate_cashflow import print_cashflow_totals
 from expense_class import Expense
 from get_input_dataset import read_data_file
 from publish_report import create_report
-from calculate_cashflow import print_cashflow_totals
 
 # ---------------------------------------------------------------------- #
 # Constant Declarations
@@ -46,7 +46,20 @@ def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
             input_df.iloc[i][AMT],
             input_df.iloc[i][DATE],
         )
-        new_expense.categorize(input_df.iloc[i][CAT], input_df.iloc[i][SCAT])
+
+        category = ""
+        if pd.isnull(input_df.iloc[i][CAT]):
+            category = "Other"
+        else:
+            category = input_df.iloc[i][CAT]
+
+        subcategory = ""
+        if pd.isnull(input_df.iloc[i][SCAT]):
+            subcategory = "Other"
+        else:
+            subcategory = input_df.iloc[i][SCAT]
+
+        new_expense.categorize(category, subcategory)
         new_expense.add_notes(input_df.iloc[i][NOTE])
 
         # add new Expense item to the expense object list
