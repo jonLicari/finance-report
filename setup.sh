@@ -18,7 +18,7 @@ python$PYTHON_VERSION -m venv venv
 source venv/bin/activate
 
 # Install dependencies from requirements.txt
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
 # Display a message indicating successful setup
 echo "Virtual environment created and dependencies installed successfully."

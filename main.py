@@ -11,7 +11,6 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 
-import os
 import tempfile
 
 import matplotlib.pyplot as plt
