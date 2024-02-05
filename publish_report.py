@@ -2,13 +2,14 @@
 
 import tempfile
 
+import matplotlib.figure as pltfig
 import matplotlib.pyplot as plt
 from fpdf import FPDF
 
 from expense_class import Expense
 
 
-def plot_category_expenses(expense_list):
+def plot_category_expenses(expense_list: list[Expense]) -> pltfig.Figure:
     """Plot expense categories as a pie chart."""
     # Initialize dictionary to store category totals
     category_totals = {}
@@ -32,7 +33,7 @@ def plot_category_expenses(expense_list):
     return fig
 
 
-def plot_income(expense_list: list[Expense]):
+def plot_income(expense_list: list[Expense]) -> pltfig.Figure:
     """Plot all Income subcategories combined."""
     income_total = 0
     non_salary_total = 0
@@ -80,7 +81,7 @@ def plot_income(expense_list: list[Expense]):
     return fig
 
 
-def plot_net_savings(expense_list: list[Expense]):
+def plot_net_savings(expense_list: list[Expense]) -> pltfig.Figure:
     """Plot net savings."""
     total_income = 0
     total_expenses = 0
@@ -124,14 +125,14 @@ def plot_net_savings(expense_list: list[Expense]):
     return fig
 
 
-def plot_to_image(fig: plt.Figure):  # type: ignore
+def plot_to_image(plot: pltfig.Figure) -> str:
     """Convert a Matplotlib figure to a PIL Image and return it."""
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as f:
-        fig.savefig(f, format="png")
+        plot.savefig(f.name, format="png")
         return f.name
 
 
-def create_report(expense_list):
+def create_report(expense_list: list[Expense]) -> None:
     """Create pdf report of all figures."""
     # Create the figures
     fig1 = plot_net_savings(expense_list)
