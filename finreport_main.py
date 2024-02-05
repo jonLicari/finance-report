@@ -177,12 +177,12 @@ def create_report(expense_list):
     # Create the figures
     fig1 = plot_net_savings(expense_list)
     fig2 = plot_income(expense_list)
-    # fig3 = plot_category_expenses(expense_list)
+    fig3 = plot_category_expenses(expense_list)
 
     # Convert the figures to images
     img1 = plot_to_image(fig1)
     img2 = plot_to_image(fig2)
-    # img3 = plot_to_image(fig3)
+    img3 = plot_to_image(fig3)
 
     # Create the PDF document
     pdf = FPDF()
@@ -193,7 +193,7 @@ def create_report(expense_list):
     pdf.add_page()
     pdf.image(img2, w=200)
     pdf.add_page()
-    # pdf.image(img3, w=200)
+    pdf.image(img3, w=200)
 
     # Save the PDF document
     pdf.output("expense_report.pdf")
@@ -219,7 +219,7 @@ def plot_category_expenses(expense_list):
         autopct="%1.1f%%",
     )
     plt.title("Expense Categories")
-    plt.show()
+    plt.show(block=False)
     return fig
 
 
@@ -267,7 +267,7 @@ def plot_income(expense_list: list[Expense]):
 
     # Set the title of the chart
     plt.title("Income Distribution")
-    # plt.show()
+    # plt.show(block=False)
     return fig
 
 
@@ -311,7 +311,7 @@ def plot_net_savings(expense_list: list[Expense]):
     ]
     axis.legend(labels=labels, loc="best")
 
-    # plt.show()
+    # plt.show(block=False)
     return fig
 
 
