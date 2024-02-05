@@ -15,6 +15,7 @@ import pandas as pd
 from expense_class import Expense
 from get_input_dataset import read_data_file
 from publish_report import create_report
+from calculate_cashflow import print_cashflow_totals
 
 # ---------------------------------------------------------------------- #
 # Constant Declarations
@@ -28,10 +29,10 @@ SCAT = 5
 NOTE = 6
 
 
-def format_object_list(input_df: pd.DataFrame):
+def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
     """Convert pandas dataframe to an object list."""
     # The object list will be populated from the raw_data_file_df
-    expense_list = []
+    expense_list: list[Expense] = []
 
     # Find number of entries in the dataframe
     num_expense_entries = len(input_df)
@@ -57,44 +58,16 @@ def format_object_list(input_df: pd.DataFrame):
     return expense_list
 
 
-def categorical_total(expense_list: list[Expense]) -> None:
-    """Calculate sum for each category/ sub-category & prints to terminal."""
-    category_totals = {}
-
-    for expense in expense_list:
-        category = expense.category
-        subcat = expense.subcat
-        amount = expense.amount
-
-        # If the category & subcategory combo isnt in the dictionary, add it
-        if category not in category_totals:
-            category_totals[category] = {}
-        if subcat not in category_totals[category]:
-            category_totals[category][subcat] = 0
-
-        # Add the amount to the category and subcategory total
-        category_totals[category][subcat] += amount
-
-    # Print the total sum for each category and subcategory
-    for category, subcats in category_totals.items():
-        cat_total = 0
-        for subcat, total in subcats.items():
-            cat_total += total
-        print(f"{category} total = ${cat_total}")
-        for subcat, total in subcats.items():
-            print(f"  {subcat}: ${total}")
-
-
 def main():
     """File Main method."""
     # Read input data file
     raw_data = read_data_file()
 
     # Format data
-    refined_data = format_object_list(raw_data)
+    refined_data: list[Expense] = format_object_list(raw_data)
 
     # Calculate categorical totals
-    categorical_total(refined_data)
+    print_cashflow_totals(refined_data)
 
     # Publish graphs to PDF
     create_report(refined_data)
