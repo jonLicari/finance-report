@@ -2,7 +2,7 @@
 
 # ---------------------------------------------------------------------- #
 # Author: Jonathan Licari                                                #
-# File: finreport_main.py                                                #
+# File: main.py                                                          #
 # Organizes financial data from xlsx files and                           #
 # generates financial reports and graphic summaries                      #
 #                                                                        #
