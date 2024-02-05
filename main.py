@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from fpdf import FPDF
 
-from utils.expense_class import Expense
+from expense_class import Expense
 
 # ---------------------------------------------------------------------- #
 # Constant Declarations
