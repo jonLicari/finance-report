@@ -177,14 +177,12 @@ def create_report(expense_list):
     # Create the figures
     fig1 = plot_net_savings(expense_list)
     fig2 = plot_income(expense_list)
-    # fig3 = plot_secondary_subcat(expense_list)
-    # fig4 = plot_category_expenses(expense_list)
+    # fig3 = plot_category_expenses(expense_list)
 
     # Convert the figures to images
     img1 = plot_to_image(fig1)
     img2 = plot_to_image(fig2)
     # img3 = plot_to_image(fig3)
-    # img4 = plot_to_image(fig4)
 
     # Create the PDF document
     pdf = FPDF()
@@ -194,10 +192,8 @@ def create_report(expense_list):
     pdf.image(img1, w=200)
     pdf.add_page()
     pdf.image(img2, w=200)
-    # pdf.add_page()
+    pdf.add_page()
     # pdf.image(img3, w=200)
-    # pdf.add_page()
-    # pdf.image(img4, w=200)
 
     # Save the PDF document
     pdf.output("expense_report.pdf")
@@ -224,37 +220,6 @@ def plot_category_expenses(expense_list):
     )
     plt.title("Expense Categories")
     plt.show()
-    return fig
-
-
-def plot_secondary_subcat(expense_list):
-    """Plot Secondary income subcategories."""
-    # Filter the expenses to only include those in the Secondary category
-    secondary_expenses = [
-        expense for expense in expense_list if expense.category == "Secondary"
-    ]
-
-    # Create a dictionary to store the total amounts for each subcategory
-    subcat_totals = {}
-    for expense in secondary_expenses:
-        subcat = expense.subcat
-        amount = expense.amount
-        if subcat not in subcat_totals:
-            subcat_totals[subcat] = 0
-        subcat_totals[subcat] += amount
-
-    # Create a list of the subcategory labels and their corresponding amounts
-    labels = list(subcat_totals.keys())
-    amounts = list(subcat_totals.values())
-
-    # Plot the pie chart
-    fig, _ = plt.subplots()
-    plt.pie(amounts, labels=labels, autopct="%1.1f%%")
-    plt.title("Secondary Subcategory Expenses")
-    plt.legend(labels, loc="best")
-
-    # Display the chart
-    # plt.show()
     return fig
 
 
