@@ -219,7 +219,7 @@ def plot_category_expenses(expense_list):
         autopct="%1.1f%%",
     )
     plt.title("Expense Categories")
-    plt.show(block=False)
+    plt.show(block=False)  # since we have the pdf is there any point to these?
     return fig
 
 
