@@ -176,13 +176,13 @@ def create_report(expense_list):
     """Create pdf report of all figures."""
     # Create the figures
     fig1 = plot_net_savings(expense_list)
-    # fig2 = plot_income(expense_list)
+    fig2 = plot_income(expense_list)
     # fig3 = plot_secondary_subcat(expense_list)
     # fig4 = plot_category_expenses(expense_list)
 
     # Convert the figures to images
     img1 = plot_to_image(fig1)
-    # img2 = plot_to_image(fig2)
+    img2 = plot_to_image(fig2)
     # img3 = plot_to_image(fig3)
     # img4 = plot_to_image(fig4)
 
@@ -193,7 +193,7 @@ def create_report(expense_list):
     # Add the figures to the PDF document
     pdf.image(img1, w=200)
     pdf.add_page()
-    # pdf.image(img2, w=200)
+    pdf.image(img2, w=200)
     # pdf.add_page()
     # pdf.image(img3, w=200)
     # pdf.add_page()
@@ -266,6 +266,8 @@ def plot_income(expense_list: list[Expense]):
 
     for expense in expense_list:
         if expense.category == "Income":
+            income_total += expense.amount
+
             if expense.subcat not in income_subtotals:
                 if expense.subcat == "":
                     income_subtotals["Other"] = expense.amount
@@ -273,7 +275,6 @@ def plot_income(expense_list: list[Expense]):
                     income_subtotals[expense.subcat] = expense.amount
             else:
                 income_subtotals[expense.subcat] += expense.amount
-            income_total += expense.amount
 
     # Calculate percentages for each subcategory
     percentages = [
