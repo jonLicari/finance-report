@@ -13,20 +13,9 @@
 import pandas as pd
 
 from calculate_cashflow import print_cashflow_totals
-from expense_class import Expense
+from expense_class import Expense, ExpenseFormat
 from get_input_dataset import read_data_file
 from publish_report import create_report
-
-# ---------------------------------------------------------------------- #
-# Constant Declarations
-# ---------------------------------------------------------------------- #
-TYPE = 0
-NAME = 1
-AMT = 2
-DATE = 3
-CAT = 4
-SCAT = 5
-NOTE = 6
 
 
 def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
@@ -41,26 +30,26 @@ def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
     for i in range(num_expense_entries):
         # Read each row of the dataframe into an instance of the Expense object
         new_expense = Expense(
-            input_df.iloc[i][TYPE],
-            input_df.iloc[i][NAME],
-            input_df.iloc[i][AMT],
-            input_df.iloc[i][DATE],
+            input_df.iloc[i][ExpenseFormat.TYPE],
+            input_df.iloc[i][ExpenseFormat.NAME],
+            input_df.iloc[i][ExpenseFormat.AMT],
+            input_df.iloc[i][ExpenseFormat.DATE],
         )
 
         category = ""
-        if pd.isnull(input_df.iloc[i][CAT]):
+        if pd.isnull(input_df.iloc[i][ExpenseFormat.CAT]):
             category = "Other"
         else:
-            category = input_df.iloc[i][CAT]
+            category = input_df.iloc[i][ExpenseFormat.CAT]
 
         subcategory = ""
-        if pd.isnull(input_df.iloc[i][SCAT]):
+        if pd.isnull(input_df.iloc[i][ExpenseFormat.SCAT]):
             subcategory = "Other"
         else:
-            subcategory = input_df.iloc[i][SCAT]
+            subcategory = input_df.iloc[i][ExpenseFormat.SCAT]
 
         new_expense.categorize(category, subcategory)
-        new_expense.add_notes(input_df.iloc[i][NOTE])
+        new_expense.add_notes(input_df.iloc[i][ExpenseFormat.NOTE])
 
         # add new Expense item to the expense object list
         expense_list.append(new_expense)

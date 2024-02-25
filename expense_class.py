@@ -1,6 +1,18 @@
 """File defines the Expense class to be used."""
 
 import decimal
+from enum import Enum
+
+
+class ExpenseFormat(Enum):
+    '''Indices of Expense object'''
+    TYPE = 0
+    NAME = 1
+    AMT = 2
+    DATE = 3
+    CAT = 4
+    SCAT = 5
+    NOTE = 6
 
 
 class Expense:
