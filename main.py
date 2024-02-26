@@ -30,26 +30,26 @@ def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
     for i in range(num_expense_entries):
         # Read each row of the dataframe into an instance of the Expense object
         new_expense = Expense(
-            input_df.iloc[i][ExpenseFormat.TYPE],
-            input_df.iloc[i][ExpenseFormat.NAME],
-            input_df.iloc[i][ExpenseFormat.AMT],
-            input_df.iloc[i][ExpenseFormat.DATE],
+            input_df.iloc[i][ExpenseFormat.TYPE.value],
+            input_df.iloc[i][ExpenseFormat.NAME.value],
+            input_df.iloc[i][ExpenseFormat.AMT.value],
+            input_df.iloc[i][ExpenseFormat.DATE.value],
         )
 
         category = ""
-        if pd.isnull(input_df.iloc[i][ExpenseFormat.CAT]):
+        if pd.isnull(input_df.iloc[i][ExpenseFormat.CAT.value]):
             category = "Other"
         else:
-            category = input_df.iloc[i][ExpenseFormat.CAT]
+            category = input_df.iloc[i][ExpenseFormat.CAT.value]
 
         subcategory = ""
-        if pd.isnull(input_df.iloc[i][ExpenseFormat.SCAT]):
+        if pd.isnull(input_df.iloc[i][ExpenseFormat.SCAT.value]):
             subcategory = "Other"
         else:
-            subcategory = input_df.iloc[i][ExpenseFormat.SCAT]
+            subcategory = input_df.iloc[i][ExpenseFormat.SCAT.value]
 
         new_expense.categorize(category, subcategory)
-        new_expense.add_notes(input_df.iloc[i][ExpenseFormat.NOTE])
+        new_expense.add_notes(input_df.iloc[i][ExpenseFormat.NOTE.value])
 
         # add new Expense item to the expense object list
         expense_list.append(new_expense)
@@ -72,7 +72,7 @@ def main():
     print_cashflow_totals(refined_data)
 
     # Publish graphs to PDF
-    create_report(refined_data)
+    # create_report(refined_data)
 
 
 if __name__ == "__main__":

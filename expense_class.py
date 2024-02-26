@@ -5,7 +5,8 @@ from enum import Enum
 
 
 class ExpenseFormat(Enum):
-    '''Indices of Expense object'''
+    """Indices of Expense object"""
+
     TYPE = 0
     NAME = 1
     AMT = 2
