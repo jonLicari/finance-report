@@ -42,7 +42,7 @@ class Expense:
 
 
 @dataclass
-class MonthlyCashflow:
+class Cashflow:
     """Total incoming and outgoing expenditures for a month."""
 
     ingoing: Decimal
