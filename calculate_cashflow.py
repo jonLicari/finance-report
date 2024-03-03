@@ -1,57 +1,9 @@
-"""Calculate the total money ins & outs and print results to terminal."""
+"""Calculate the total money ins & outs and category totals."""
 from datetime import datetime
 from decimal import Decimal
 
 from expense_class import Cashflow, Expense
-
-
-def print_cashflow(cashflow_object: Cashflow) -> None:
-    """Print dollar values of Cashflow objects to terminal."""
-    print("   Ingoing:  $", cashflow_object.ingoing)
-    print("   Outgoing: $", cashflow_object.outgoing)
-
-
-def month_index_to_string(index: int) -> str:  # type: ignore
-    """Return the month as a string based on the index."""
-    assert 1 <= index <= 12, "Invalid month index."
-    match index:
-        case 1:
-            return "January"
-        case 2:
-            return "February"
-        case 3:
-            return "March"
-        case 4:
-            return "April"
-        case 5:
-            return "May"
-        case 6:
-            return "June"
-        case 7:
-            return "July"
-        case 8:
-            return "August"
-        case 9:
-            return "September"
-        case 10:
-            return "October"
-        case 11:
-            return "November"
-        case 12:
-            return "December"
-
-
-def print_to_terminal(monthly_totals: list[Cashflow]) -> None:
-    """Orchestrate printing to terminal."""
-    index_of_month: int = 1
-
-    # Print monthly totals
-    for month in monthly_totals:
-        print(month_index_to_string(index_of_month), ":")
-        print_cashflow(month)
-
-    # Print YTD
-    # year_to_date: Cashflow
+from print_to_terminal import print_main
 
 
 def print_cashflow_totals(expense_list: list[Expense]) -> None:
@@ -135,10 +87,25 @@ def monthly_inout_sums(ytd_expenses: list[Expense]) -> list[Cashflow]:
     return monthly_inouts
 
 
+def calculate_ytd_inout(monthly_inouts: list[Cashflow]) -> Cashflow:
+    """Calculate the YTD total ins and outs."""
+    ytd_totals = Cashflow(Decimal(0), Decimal(0))
+
+    for month in monthly_inouts:
+        ytd_totals.ingoing += month.ingoing
+        ytd_totals.outgoing += month.outgoing
+
+    return ytd_totals
+
+
 def calculations_main(ytd_expenses: list[Expense]) -> None:
     """Orchestrates a sequence of calculations on expense data."""
-    # YTD Inout
+
     # Monthly Inouts
     monthly_inouts = monthly_inout_sums(ytd_expenses)
+
+    # YTD Inout
+    ytd_total = calculate_ytd_inout(monthly_inouts)
+
     # Print to terminal
-    print_to_terminal(monthly_inouts)
+    print_main(monthly_inouts, ytd_total)
