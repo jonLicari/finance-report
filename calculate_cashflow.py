@@ -5,6 +5,9 @@ from decimal import Decimal
 from expense_class import Cashflow, Expense
 
 
+# def print_to_terminal() -> None:
+
+
 def print_cashflow_totals(expense_list: list[Expense]) -> None:
     """Calculate sum for each category/ sub-category & print to terminal."""
     category_totals = {}
@@ -71,15 +74,24 @@ def sort_ytd_to_months(ytd_expenses: list[Expense]) -> list[list[Expense]]:
     return sorted_expense_list
 
 
-def monthly_inout_sums(expense_list: list[Expense]) -> list[Cashflow]:
+def monthly_inout_sums(ytd_expenses: list[Expense]) -> list[Cashflow]:
     """Calculate total inouts for each month."""
     monthly_inouts: list[Cashflow] = []
 
-    sorted_expense_list = sort_ytd_to_months(expense_list)
+    sorted_expense_list = sort_ytd_to_months(ytd_expenses)
 
     for month in sorted_expense_list:
         inouts = Cashflow(
             calculate_total_incoming(month), calculate_total_outgoing(month)
         )
         monthly_inouts.append(inouts)
+
     return monthly_inouts
+
+
+def calculations_main(ytd_expenses: list[Expense]) -> None:
+    """Orchestrates a sequence of calculations on expense data."""
+    # YTD Inout
+    # Monthly Inouts
+    monthly_inouts = monthly_inout_sums(ytd_expenses)
+    # Print to terminal

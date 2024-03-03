@@ -11,6 +11,7 @@
 # ---------------------------------------------------------------------- #
 """Report main file."""
 import pandas as pd
+from calculate_cashflow import calculations_main
 
 from expense_class import Expense, ExpenseFormat
 from get_input_dataset import read_data_file
@@ -66,8 +67,8 @@ def main():
     # Format data
     refined_data: list[Expense] = format_object_list(raw_data)
 
-    # Calculate categorical totals
-    # TODO
+    # Print calculated inout transactions to terminal
+    calculations_main(refined_data)
 
     # Publish graphs to PDF
     # TODO
