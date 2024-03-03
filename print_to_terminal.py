@@ -43,10 +43,13 @@ def print_main(monthly_totals: list[Cashflow], ytd_total: Cashflow) -> None:
     index_of_month: int = 1
 
     # Print YTD
+    print("--------------------")
     print("Year-to-Date:")
     print_cashflow(ytd_total)
+    print("--------------------")
 
     # Print monthly totals
     for month in monthly_totals:
-        print(month_index_to_string(index_of_month), ":")
+        print(month_index_to_string(index_of_month))
         print_cashflow(month)
+        index_of_month += 1

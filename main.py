@@ -10,11 +10,16 @@
 # Output: none                                                           #
 # ---------------------------------------------------------------------- #
 """Report main file."""
+from datetime import datetime
 import pandas as pd
-from calculate_cashflow import calculations_main
+from calculate_cashflow import (
+    calculate_ytd_inout,
+    monthly_inout_sums,
+)
 
-from expense_class import Expense, ExpenseFormat
+from expense_class import Cashflow, Expense, ExpenseFormat
 from get_input_dataset import read_data_file
+from print_to_terminal import print_main
 
 
 def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
@@ -59,19 +64,41 @@ def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
     return expense_list
 
 
+def sort_ytd_to_months(ytd_expenses: list[Expense]) -> list[list[Expense]]:
+    """Sort YTD into monthly sets"""
+    sorted_expense_list: list[list[Expense]] = []
+
+    # O(n^2) - TODO improve this
+    for month in range(1, 13):
+        monthly_expense_list: list = []
+        for expense in ytd_expenses:
+            if datetime.strptime(expense.date, "%Y-%m-%d").month == month:
+                monthly_expense_list.append(expense)
+        sorted_expense_list.append(monthly_expense_list)
+
+    return sorted_expense_list
+
+
 def main():
     """File Main method."""
     # Read input data file
     raw_data = read_data_file()
 
-    # Format data
+    # Format raw data
     refined_data: list[Expense] = format_object_list(raw_data)
 
+    # Sort data by month
+    sorted_data: list[list[Expense]] = sort_ytd_to_months(refined_data)
+
+    # Perform Calculations
+    monthly_totals: list[Cashflow] = monthly_inout_sums(sorted_data)
+    ytd_total: Cashflow = calculate_ytd_inout(monthly_totals)
+
     # Print calculated inout transactions to terminal
-    calculations_main(refined_data)
+    print_main(monthly_totals, ytd_total)
 
     # Publish graphs to PDF
-    # TODO
+    # TODO in future PR
 
 
 if __name__ == "__main__":
