@@ -1,7 +1,9 @@
 """File defines the Expense class to be used."""
 
-import decimal
+from dataclasses import dataclass
+from decimal import Decimal
 from enum import Enum
+from datetime import datetime
 
 
 class ExpenseFormat(Enum):
@@ -21,13 +23,13 @@ class Expense:
 
     def __init__(self, exp_type, name, amount, date):
         """Expense object constructor."""
-        self.exp_type = exp_type
-        self.name = name
-        self.amount = decimal.Decimal(amount)
-        self.date = date
-        self.category = ""
-        self.subcat = ""
-        self.notes = ""
+        self.exp_type: str = exp_type
+        self.name: str = name
+        self.amount = Decimal(amount)
+        self.date: str = datetime.strftime(date, "%Y-%m-%d")
+        self.category: str = ""
+        self.subcat: str = ""
+        self.notes: str = ""
 
     def categorize(self, primary, secondary):
         """Categorize the expense item."""
@@ -37,3 +39,11 @@ class Expense:
     def add_notes(self, notes):
         """Add optional notes to expense item."""
         self.notes = notes
+
+
+@dataclass
+class MonthlyCashflow:
+    """Total incoming and outgoing expenditures for a month."""
+
+    ingoing: Decimal
+    outgoing: Decimal
