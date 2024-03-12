@@ -1,5 +1,14 @@
 """Orchestrate printing of cashflow totals to the terminal."""
+from decimal import Decimal
 from expense_class import Cashflow
+
+
+def print_category_sums(
+    primary: dict[str, Decimal], secondary: dict[str, dict[str, Decimal]]
+) -> None:
+    """Print category & subcategory breakdown."""
+    print("Primary", primary)
+    print("Secondary", secondary)
 
 
 def print_cashflow(cashflow_object: Cashflow) -> None:
@@ -11,31 +20,33 @@ def print_cashflow(cashflow_object: Cashflow) -> None:
 def month_index_to_string(index: int) -> str:  # type: ignore
     """Return the month as a string based on the index."""
     assert 1 <= index <= 12, "Invalid month index."
+    month: str
     match index:
         case 1:
-            return "January"
+            month = "January"
         case 2:
-            return "February"
+            month = "February"
         case 3:
-            return "March"
+            month = "March"
         case 4:
-            return "April"
+            month = "April"
         case 5:
-            return "May"
+            month = "May"
         case 6:
-            return "June"
+            month = "June"
         case 7:
-            return "July"
+            month = "July"
         case 8:
-            return "August"
+            month = "August"
         case 9:
-            return "September"
+            month = "September"
         case 10:
-            return "October"
+            month = "October"
         case 11:
-            return "November"
+            month = "November"
         case 12:
-            return "December"
+            month = "December"
+    return month
 
 
 def print_main(monthly_totals: list[Cashflow], ytd_total: Cashflow) -> None:

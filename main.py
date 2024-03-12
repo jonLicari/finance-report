@@ -13,13 +13,14 @@
 from datetime import datetime
 import pandas as pd
 from calculate_cashflow import (
+    calculate_category_totals,
     calculate_ytd_inout,
     monthly_inout_sums,
 )
 
 from expense_class import Cashflow, Expense, ExpenseFormat
 from get_input_dataset import read_data_file
-from print_to_terminal import print_main
+from print_to_terminal import print_main, print_category_sums
 
 
 def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
@@ -99,7 +100,7 @@ def establish_categories(expenses: list[Expense]) -> dict[str, list[str]]:
 
     # pack dictionary
     categories = dict(zip(primary, secondary))
-    print(categories)
+    # print(categories)
     return categories
 
 
@@ -117,9 +118,13 @@ def main():
     # Perform Calculations
     monthly_totals: list[Cashflow] = monthly_inout_sums(sorted_data)
     ytd_total: Cashflow = calculate_ytd_inout(monthly_totals)
+    primary_sums, secondary_sums = calculate_category_totals(
+        refined_data, establish_categories(refined_data)
+    )
 
     # Print calculated inout transactions to terminal
     print_main(monthly_totals, ytd_total)
+    print_category_sums(primary_sums, secondary_sums)
 
     # Publish graphs to PDF
     # TODO in future PR

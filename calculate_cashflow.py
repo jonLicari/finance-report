@@ -4,32 +4,27 @@ from decimal import Decimal
 from expense_class import Cashflow, Expense
 
 
-def print_cashflow_totals(expense_list: list[Expense]) -> None:
-    """Calculate sum for each category/ sub-category & print to terminal."""
-    category_totals = {}
+def calculate_category_totals(
+    monthly_list: list[Expense], labels: dict[str, list[str]]
+) -> tuple[dict[str, Decimal], dict[str, dict[str, Decimal]]]:
+    """Calculate sum for each category and sub-category."""
 
-    for expense in expense_list:
-        category = expense.category
-        subcat = expense.subcat
-        amount = expense.amount
+    # Initialization
+    primary: dict[str, Decimal] = {key: Decimal(0) for key in labels.keys()}
 
-        # If the category & subcategory combo isnt in the dictionary, add it
-        if category not in category_totals:
-            category_totals[category] = {}
-        if subcat not in category_totals[category]:
-            category_totals[category][subcat] = 0
+    secondary: dict[str, dict[str, Decimal]] = {
+        key: {sub_key: Decimal(0) for sub_key in labels[key]} for key in labels.keys()
+    }
 
-        # Add the amount to the category and subcategory total
-        category_totals[category][subcat] += amount
+    # Calculation
+    for expense in monthly_list:
+        # add to the tally of that primary
+        primary[expense.category] += expense.amount
 
-    # Print the total sum for each category and subcategory
-    for category, subcats in category_totals.items():
-        cat_total = 0
-        for subcat, total in subcats.items():
-            cat_total += total
-        print(f"{category} total = ${cat_total}")
-        for subcat, total in subcats.items():
-            print(f"  {subcat}: ${total}")
+        # add to the tally of that secondary
+        secondary[expense.category][expense.subcat] += expense.amount
+
+    return primary, secondary
 
 
 def calculate_total_incoming(expense_list: list[Expense]) -> Decimal:
