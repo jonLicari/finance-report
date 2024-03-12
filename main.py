@@ -79,6 +79,30 @@ def sort_ytd_to_months(ytd_expenses: list[Expense]) -> list[list[Expense]]:
     return sorted_expense_list
 
 
+def establish_categories(expenses: list[Expense]) -> dict[str, list[str]]:
+    """Associate categories with respective subcategory lists."""
+    categories: dict[str, list[str]] = {}
+    primary: list[str] = []
+    secondary: list[list[str]] = []
+
+    for expense in expenses:
+        if expense.category not in primary:
+            primary.append(expense.category)
+
+        idx = primary.index(expense.category)
+
+        if len(secondary) <= idx:
+            secondary.append([expense.subcat])
+
+        if expense.subcat not in secondary[idx]:
+            secondary[idx].append(expense.subcat)
+
+    # pack dictionary
+    categories = dict(zip(primary, secondary))
+    print(categories)
+    return categories
+
+
 def main():
     """File Main method."""
     # Read input data file
