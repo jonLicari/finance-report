@@ -1,4 +1,5 @@
 #!/bin/bash
 
+sh setup.sh
 sh lint.sh
-python3 ./main.py
+python3 ./src/main.py
