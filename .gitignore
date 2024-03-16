@@ -2,8 +2,7 @@
 .DS_Store
 .vscode/
 data/*.xlsx
-*.pdf
-
+data/output/*.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

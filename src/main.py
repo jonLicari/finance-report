@@ -1,14 +1,5 @@
 #!/usr/bin/env/python3
 
-# ---------------------------------------------------------------------- #
-# Author: Jonathan Licari                                                #
-# File: main.py                                                          #
-# Organizes financial data from xlsx files and                           #
-# generates financial reports and graphic summaries                      #
-#                                                                        #
-# Input: Raw expense data xlsx file                                      #
-# Output: none                                                           #
-# ---------------------------------------------------------------------- #
 """Report main file."""
 from datetime import datetime
 import pandas as pd
