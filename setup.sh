@@ -10,7 +10,7 @@ if [ -z "$PYTHON_PATH" ]; then
     echo "Python is not installed. Please install Python before running this script."
     exit 1
 else
-    echo "PYTHON_PATH is set to: $PYTHON_PATH"
+    echo "Python path: $PYTHON_PATH"
 fi
 
 # Create a virtual environment
@@ -27,13 +27,15 @@ fi
 # Create & activate new virtual environment
 $PYTHON_PATH -m venv $VENV_NAME --without-pip
 source $VENV_NAME/bin/activate
-
-# install pip
-curl https://bootstrap.pypa.io/get-pip.py | python3
 echo "$VENV_NAME created and active."
 
-# Install dependencies from requirements.txt
+# install pip
+PIP_PATH=$(command -v pip3)
+if [ -z "$PIP_PATH" ] ; then
+    curl https://bootstrap.pypa.io/get-pip.py | python3
+fi
+
+# Install dependencies
 pip3 install -r requirements.txt &>/dev/null
 
-# Display a message indicating successful setup
-echo "Virtual environment created and dependencies installed successfully."
+echo "Environment setup complete!"
