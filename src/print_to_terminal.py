@@ -1,14 +1,17 @@
 """Orchestrate printing of cashflow totals to the terminal."""
 from decimal import Decimal
+
 from expense_class import Cashflow
+from serialize_data import export_to_json
 
 
 def print_category_sums(
     primary: dict[str, Decimal], secondary: dict[str, dict[str, Decimal]]
 ) -> None:
     """Print category & subcategory breakdown."""
-    print("Primary", primary)
-    print("Secondary", secondary)
+    export_to_json(primary, secondary)
+    # print("Primary", primary)
+    # print("Secondary", secondary)
 
 
 def print_cashflow(cashflow_object: Cashflow) -> None:
