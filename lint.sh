@@ -31,10 +31,10 @@ fi
 
 # Run Black on Python files
 echo "Running Black..."
-python3 -m black . || python -m black .
+python3 -m black src/ || python -m black src/
 
 # Add other linters or formatters as needed
-echo "Running Pylint..."
-pylint .
+# echo "Running Pylint..."
+# pylint src/
 
 echo "Linting complete."

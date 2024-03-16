@@ -1,4 +1,4 @@
 #!/bin/bash
 
 sh lint.sh
-python3 ./main.py
+python3 ./src/main.py
