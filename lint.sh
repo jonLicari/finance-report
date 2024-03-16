@@ -1,23 +1,7 @@
 #!/bin/bash
 
-# Ensure script has execute permissions
-chmod +x "$0"
-
-# Check if Black is installed
-if ! command -v black &> /dev/null
-then
-    echo "Error: Black is not installed. Installing via pip..."
-    pip3 install black || pip install black
-
-    # Check if installation was successful
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to install Black."
-        exit 1
-    fi
-fi
-
 # Lint & Format
 echo "Running Black..."
-python3 -m black src/ || python -m black src/
+python3 -m black src/
 
 echo "Linting complete."

@@ -5,9 +5,10 @@ Organizes financial data from xlsx files and generates a report with graphic sum
 # Setup
 
 1. Clone repo
-2. Setup virtual environemnt & install dependencies: `sh setup.sh`
-3. Lint the program: `sh lint.sh`
-4. Run the program: `sh execute.sh`
+2. Run `sh execute.sh` to do the following:<br>
+  a. Setup virtual environemnt & install dependencies (`sh setup.sh`)<br>
+  b. Lint the program (`sh lint.sh`)<br>
+  c. Run the program<br>
 
 Upload personal datasets or use public sample data
 
