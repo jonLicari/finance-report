@@ -2,16 +2,14 @@
 from decimal import Decimal
 
 from expense_class import Cashflow
-from serialize_data import export_to_json
 
 
 def print_category_sums(
     primary: dict[str, Decimal], secondary: dict[str, dict[str, Decimal]]
 ) -> None:
     """Print category & subcategory breakdown."""
-    export_to_json(primary, secondary)
-    # print("Primary", primary)
-    # print("Secondary", secondary)
+    print("Primary", primary)
+    print("Secondary", secondary)
 
 
 def print_cashflow(cashflow_object: Cashflow) -> None:
@@ -20,7 +18,7 @@ def print_cashflow(cashflow_object: Cashflow) -> None:
     print("   Outgoing: $", cashflow_object.outgoing)
 
 
-def month_index_to_string(index: int) -> str:  # type: ignore
+def month_index_to_string(index: int) -> str:
     """Return the month as a string based on the index."""
     assert 1 <= index <= 12, "Invalid month index."
     month: str

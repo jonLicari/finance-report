@@ -12,6 +12,7 @@ from calculate_cashflow import (
 from expense_class import Cashflow, Expense, ExpenseFormat
 from get_input_dataset import read_data_file
 from print_to_terminal import print_main, print_category_sums
+from serialize_data import export_all_to_json
 
 
 def format_object_list(input_df: pd.DataFrame) -> list[Expense]:
@@ -112,6 +113,9 @@ def main():
     primary_sums, secondary_sums = calculate_category_totals(
         refined_data, establish_categories(refined_data)
     )
+
+    # Save all calculations to file
+    export_all_to_json(ytd_total, monthly_totals, primary_sums, secondary_sums)
 
     # Print calculated inout transactions to terminal
     print_main(monthly_totals, ytd_total)
