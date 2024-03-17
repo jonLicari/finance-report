@@ -42,12 +42,12 @@ def serialize_subcategories(
     return secondary_serial
 
 
-def serialize_cashflow(item: Cashflow, string_format=True) -> SerializedCashflow:
+def serialize_cashflow(item: Cashflow, string_format=True) -> dict:
     """Convert cashflow data to serializable format."""
-
-    return SerializedCashflow(
-        serialize(item.ingoing, string_format), serialize(item.outgoing, string_format)
-    )
+    return {
+        "ingoing": serialize(item.ingoing, string_format),
+        "outgoing": serialize(item.outgoing, string_format),
+    }
 
 
 def create_export_file(json_data, name: str):
@@ -70,14 +70,12 @@ def export_all_to_json(
 
     # Serialize All Data
     ytd_s = serialize_cashflow(ytd)
-    monthly_s: list[SerializedCashflow] = [
-        serialize_cashflow(item) for item in per_month
-    ]
+    monthly_s = [serialize_cashflow(item) for item in per_month]
     primary_s = serialize_categories(category)
     secondary_s = serialize_subcategories(subcategory)
 
     # Pack data into JSON files
-    # create_export_file(json.dumps(ytd_s, indent=2), "YTD")
-    # create_export_file(json.dumps(monthly_s, indent=2), "monthly_motals")
-    create_export_file(json.dumps(primary_s, indent=2), "categories")
-    create_export_file(json.dumps(secondary_s, indent=2), "subcategories")
+    create_export_file(json.dumps(ytd_s, indent=3), "YTD")
+    create_export_file(json.dumps(monthly_s, indent=3), "monthly_motals")
+    create_export_file(json.dumps(primary_s, indent=3), "categories")
+    create_export_file(json.dumps(secondary_s, indent=3), "subcategories")

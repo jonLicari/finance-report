@@ -1,6 +1,5 @@
 """Orchestrate printing of cashflow totals to the terminal."""
 from decimal import Decimal
-
 from expense_class import Cashflow
 
 
