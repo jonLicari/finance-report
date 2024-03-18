@@ -47,3 +47,11 @@ class Cashflow:
 
     ingoing: Decimal
     outgoing: Decimal
+
+
+@dataclass
+class SerializedCashflow:
+    """Cashflow object with standard datatypes for exporting to JSON."""
+
+    ingoing: str | float
+    outgoing: str | float
