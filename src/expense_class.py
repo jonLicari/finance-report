@@ -26,7 +26,8 @@ class Expense:
         self.exp_type: str = exp_type
         self.name: str = name
         self.amount = Decimal(amount)
-        self.date: str = datetime.strftime(date, "%Y-%m-%d")
+        formatted_date = datetime.strptime(date, "%Y-%m-%d")
+        self.date: str = datetime.strftime(formatted_date, "%Y-%m-%d")
         self.category: str = ""
         self.subcat: str = ""
         self.notes: str = ""

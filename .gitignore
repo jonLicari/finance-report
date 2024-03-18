@@ -1,7 +1,7 @@
 # Data
 .DS_Store
 .vscode/
-data/*.xlsx
+data/*
 data/output/*
 
 # Byte-compiled / optimized / DLL files
