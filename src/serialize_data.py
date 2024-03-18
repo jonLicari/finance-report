@@ -62,7 +62,7 @@ def create_export_file(json_data, name: str):
 
 def export_all_to_json(
     ytd: Cashflow,
-    per_month: list[Cashflow],
+    per_month: dict[str, Cashflow],
     category: dict[str, Decimal],
     subcategory: dict[str, dict[str, Decimal]],
 ) -> None:
@@ -70,12 +70,12 @@ def export_all_to_json(
 
     # Serialize All Data
     ytd_s = serialize_cashflow(ytd)
-    monthly_s = [serialize_cashflow(item) for item in per_month]
+    monthly_s = {key: serialize_cashflow(per_month[key]) for key in per_month}
     primary_s = serialize_categories(category)
     secondary_s = serialize_subcategories(subcategory)
 
     # Pack data into JSON files
     create_export_file(json.dumps(ytd_s, indent=3), "YTD")
-    create_export_file(json.dumps(monthly_s, indent=3), "monthly_motals")
+    create_export_file(json.dumps(monthly_s, indent=3), "monthly_totals")
     create_export_file(json.dumps(primary_s, indent=3), "categories")
     create_export_file(json.dumps(secondary_s, indent=3), "subcategories")

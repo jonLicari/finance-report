@@ -108,8 +108,8 @@ def main():
     sorted_data: list[list[Expense]] = sort_ytd_to_months(refined_data)
 
     # Perform Calculations
-    monthly_totals: list[Cashflow] = monthly_inout_sums(sorted_data)
-    ytd_total: Cashflow = calculate_ytd_inout(monthly_totals)
+    monthly_totals = monthly_inout_sums(sorted_data)
+    ytd_total = calculate_ytd_inout(monthly_totals)
     primary_sums, secondary_sums = calculate_category_totals(
         refined_data, establish_categories(refined_data)
     )
