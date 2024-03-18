@@ -24,8 +24,8 @@ def user_datset_selection(limit: int) -> int:
 def data_resource() -> str:
     """Return the path to the data resource."""
     base_path = os.getcwd() + "/data"
-    sample_dataset_path = os.getcwd() + "/data/sample/sample.xlsx"
-    extension = ".xlsx"
+    extension = ".csv"
+    sample_dataset_path = os.getcwd() + "/data/sample/sample" + extension
     file_path = ""
     file_list = [file for file in os.listdir(base_path) if file.endswith(extension)]
 
@@ -42,10 +42,11 @@ def data_resource() -> str:
             print(f"File {i}: {name}")
             count = i
         count = count + 1
-        print(f"File {count}: sample.xlsx")
+        print(f"File {count}: sample{extension}")
 
         # take user input
         dataset_selection = user_datset_selection(count)
+        assert 0 <= dataset_selection <= count, "Invalid selection."
 
         if dataset_selection == count:
             print("Selecting sample dataset")
@@ -55,9 +56,6 @@ def data_resource() -> str:
             file_path = os.path.join(base_path, file_list[dataset_selection])
             print("Selecting ", file_list[dataset_selection])
 
-        else:
-            print("You fucked it all up.")
-
     else:
         file_path = os.path.join(base_path, file_list[0])
 
@@ -66,7 +64,8 @@ def data_resource() -> str:
 
 def read_data_file():
     """Input data from xlsx file and store in a pandas dataframe."""
-    raw_data_file_df = pd.read_excel(data_resource())
+    # raw_data_file_df = pd.read_excel(data_resource())
+    raw_data_file_df = pd.read_csv(data_resource())
 
     # Number data stored as float64 by default.
     # Convert to string to avoid floating point operations
